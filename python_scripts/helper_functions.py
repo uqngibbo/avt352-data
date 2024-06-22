@@ -329,7 +329,9 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
             plt.plot(data_dict[tgt_mesh][turb_model][:-2,0],
                     data_dict[tgt_mesh][turb_model][:-2,1] * scale_fac,
                     color = color,
-                    label = labelname)
+                    label = labelname,
+                    linestyle= linestyles_list[linestyle_counter])
+            linestyle_counter +=1
         else:
             if turb_model in tgt_turb_list:
                 plt.plot(data_dict[tgt_mesh][turb_model][:-2,0],
