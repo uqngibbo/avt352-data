@@ -20,16 +20,45 @@ solver_color_dict = {
             'overflow': 'purple'
 }
 
+ylim_up_dict = {'run14': {'wallHeatFlux':0.7e6, 'noseHeatFlux':0.1e6, 'wallP':5e3},
+            'run28': {'wallHeatFlux':3e6, 'wallP':20, 'noseHeatFlux':0.5e6},
+            'run33': {'wallHeatFlux':0.2e6,
+                        'noseHeatFlux':0.025e6,
+                        'wallP':4e3
+                    },
+            'run34': {'wallP':10e3, 'wallHeatFlux':2.2e6,  'noseHeatFlux':0.25e6},
+            'run41': {'wallP':5e3, 'wallHeatFlux':2.8e6,  'noseHeatFlux':0.25e6},
+            'run45': {'wallP':20e3, 'wallHeatFlux':5.2e6,  'noseHeatFlux':0.8e6},
+            'run4': {'wallP':10e3, 'wallHeatFlux':4.0e6,  'noseHeatFlux':0.4e6},
+            'run6': {'wallP':10e3, 'wallHeatFlux':7.5e6,  'noseHeatFlux':0.4e6},
+            'run37': {'wallP':250e3, 'wallHeatFlux':1.0e6,  'noseHeatFlux':0.25e6},
+    }
+
+#   for the lower y limits
+ylim_low_dict = {
+            'run14':{'wallP':0},
+            'run28':{'wallP':10},
+            'run33': {'wallP':2e3},
+            'run34': {'wallP':2e3},
+            'run41': {'wallP':0e3},
+            'run45': {'wallP':10e3},
+            'run4': {'wallP':0e3},
+            'run37': {'wallP':2e3},
+            'run6': {'wallP':0e3},
+    }
+
 #-----------end helper functions------------------------------------------#
 #-------------------------------------------------------------------------#
 
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run4'
+run_nb = 'run6'
 geom_nb = "geom1"
 solver_color = True
-zoom_flag = False
+zoom_flag = False # If true, focus on nose cone region
+
+
 # Defines the solvers selected, the grid and turbulence models
 #   might look cumbersome at first but it's an elegant and simple solution to
 #   work with all the existing code structure
@@ -42,41 +71,65 @@ parameter_matrix = {
 #                                                     {'SST': 'k-$\\omega$ SST'}
 #                                             }
                             # },
+    # for run4
+            # 'starccm':{ 'mesh':'mesh06',
+            #             'naming_dict': {'mesh':
+            #                                 {'mesh06': 'STAR-CCM+'},
+            #                             'turb':
+            #                                 {'SST': 'k-$\\omega$ SST'} 
+            #                         }
+            #             },
+            # 'eilmer':{ 'mesh':'mesh1',
+            #             'naming_dict': {'mesh':
+            #                                 {'mesh1': 'Eilmer'},
+            #                             'turb':
+            #                                 {'komega': 'Wilcox k-$\\omega$ 2006'} 
+            #                         }  
+            #             },
+            # 'ansys_aselsan':{ 'mesh':'meshXX',
+            #                 'turb_model_list': ['SST1T','SA1T'],
 
-            # for run4
-                    'starccm':{ 'mesh':'mesh06',
-                                'naming_dict': {'mesh':
-                                                    {'mesh06': 'STAR-CCM+'},
-                                                'turb':
-                                                    {'SST': 'k-$\\omega$ SST'} 
-                                            }
-                                },
-                    'eilmer':{ 'mesh':'mesh1',
-                                'naming_dict': {'mesh':
-                                                    {'mesh1': 'Eilmer'},
-                                                'turb':
-                                                    {'komega': 'Wilcox k-$\\omega$ 2006'} 
-                                            }  
-                                },
-                    'ansys_aselsan':{ 'mesh':'mesh4',
-                                'naming_dict': {'mesh':
-                                                    {'mesh4': 'Ansys Fluent (Aselsan)'},
-                                                'turb':
-                                                    {'SST': 'k-$\\omega$ SST'} 
-                                            }  
-                                },
-                    'SU2':{ 'mesh':'meshVeryFine',
-                                'naming_dict': {'mesh':
-                                                    {'meshVeryFine': 'SU2'},
-                                                'turb':
-                                                    {'SST': 'k-$\\omega$ SST'} 
-                                            }  
-                                },
-                    'overflow':{ 'mesh':'meshXX',
-                                'naming_dict': {'mesh':
-                                                    {'meshXX': 'OVERFLOW'},
-                                            }  
-                                },
+            #             'naming_dict': {'mesh':
+            #                                 {'meshXX': 'Ansys Fluent (Aselsan)'},
+            #                             'turb':
+            #                                 {'SST1T': 'k-$\\omega$ SST',
+            #                                 'SA1T': 'SA'} 
+            #                         }
+            #             },
+            # 'SU2':{ 'mesh':'meshVeryFine',
+            #             'naming_dict': {'mesh':
+            #                                 {'meshVeryFine': 'SU2'},
+            #                             'turb':
+            #                                 {'SST': 'k-$\\omega$ SST'} 
+            #                         }  
+            #             },
+            # 'overflow':{ 'mesh':'mesh2',
+            #             'naming_dict': {'mesh':
+            #                                 {'mesh2': 'OVERFLOW'},
+            #                             'turb':
+            #                                 {'SST': 'k-$\\omega$ SST'}
+            #                         } 
+            #             },
+    # for run6
+            'eilmer':{ 'mesh':'mesh1',
+                        'naming_dict': {'mesh':
+                                            {'mesh1': 'Eilmer'},
+                                        'turb':
+                                            {'komega': 'Wilcox k-$\\omega$ 2006'} 
+                                    }  
+                        },
+            'ansys_aselsan':{ 'mesh':'mesh4',
+                            # 'turb_model_list': ['SST','SA1T'],
+
+                        'naming_dict': {'mesh':
+                                            {'mesh4': 'Ansys Fluent (Aselsan)'},
+                                        'turb':
+                                            {'SST1T': 'k-$\\omega$ SST',
+                                            'SA1T': 'SA',
+                                             'SST':'k-$\\omega$ SST'} 
+                                    }
+                        },
+
             # # for run 45
                     # 'starccm':{ 'mesh':'mesh08',
                     #             'naming_dict': {'mesh':
@@ -292,8 +345,8 @@ helpfunc.apply_axes_limits(run_nb, geom_nb)
 
 if zoom_flag:
     plt.xlim([0,2])
-    plt.ylim(top=1.8e4)
-    plt.ylim(bottom=1.4e4)
+    plt.ylim(top = ylim_up_dict[run_nb][key_select])
+    plt.ylim(bottom = ylim_low_dict[run_nb][key_select])
 
 plt.ylabel('Pressure (Pa)')
 plt.tight_layout()
@@ -357,8 +410,9 @@ if run_nb == 'run4':
     plt.ylim(bottom = -1e3)
 
 if zoom_flag:
+    key_select = 'noseHeatFlux'
     plt.xlim([0,2])
-    plt.ylim(top = 1e6)
+    plt.ylim(top = ylim_up_dict[run_nb][key_select])
     plt.ylim(bottom = 0e6)
 plt.ylabel('Heat Flux (W / $m^2$)')
 
