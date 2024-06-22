@@ -370,7 +370,7 @@ def plot_mesh_loop(cfd_data_dict, key_select, tgt_mesh_list = None, tgt_turb_lis
     mesh_colors = ['blue','red','green','black','brown', 'violet']
     for ind, mesh in enumerate(sorted(cfd_data_dict[key_select].keys())):
         # Sorted is required to order the grids
-        print(scaling_dict[key_select])
+        print("Scaling quantity", key_select, " by ", scaling_dict[key_select])
         if tgt_mesh_list is None:
             plot_loop_turbulence_models(cfd_data_dict[key_select], mesh,
                                             tgt_turb_list = tgt_turb_list,

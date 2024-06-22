@@ -1,4 +1,7 @@
-""" Plotting the data from Holden simu
+""" This script is used to compare your data of a specific run
+    to the experiments. It also allows the comparison of various
+    grids. The results will be added in a folder following the naming
+    `SOLVER_comparison_RUNNB`
 """
 
 import os
@@ -8,22 +11,23 @@ import matplotlib.pyplot as plt
 import helper_functions as helpfunc
 import matplotlib.ticker as ticker
 
-#-----------end helper functions------------------------------------------#
-#-------------------------------------------------------------------------#
 
-#-------------------------------------------------------------------------------#
+#-----------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
 run_nb = 'run37'
 geom_nb = "geom2"
 code_cfd = "starccm"
+
+# Do  not touch
 ref_pressure_file = '_'.join((run_nb,"pressure.csv"))
 ref_heatflux_file = '_'.join((run_nb,"heatFlux.csv"))
+#----------------#
 
 cfd_folder = os.path.join("..","cfddata",code_cfd,geom_nb,run_nb)
-
 res_folder = "_".join((code_cfd,"comparison",run_nb))
 work_dir = os.getcwd()
+
 
 
 
@@ -52,12 +56,15 @@ naming_dict = {
             }
 
 
+# If you wish the data to be scaled by a given value
 scaling_dict = {'wallP':1e-3,
                 'wallYPlus':1,
                 'skinFrictionCoeff':1,
                 'wallHeatFlux':1e-6}
 
 
+# Define limits for the plots
+#   for the upper y limits
 ylim_up_dict = {'run14': {'wallHeatFlux':0.7e6, 'noseHeatFlux':0.1e6, 'wallP':5e3},
             'run28': {'wallHeatFlux':3e6, 'wallP':20, 'noseHeatFlux':0.5e6},
             'run33': {'wallHeatFlux':0.2e6,
@@ -71,6 +78,7 @@ ylim_up_dict = {'run14': {'wallHeatFlux':0.7e6, 'noseHeatFlux':0.1e6, 'wallP':5e
             'run37': {'wallP':3e3, 'wallHeatFlux':1.0e6,  'noseHeatFlux':0.25e6},
     }
 
+#   for the lower y limits
 ylim_low_dict = {
             'run14':{'wallP':0},
             'run28':{'wallP':10},
@@ -82,7 +90,7 @@ ylim_low_dict = {
             'run37': {'wallP':2e3},
     }
 
-#-------------------------------------------------------------------------------#
+#----------End user selection zone----------------------------------------------#
 #-------------------------------------------------------------------------------#
 
 ref_pressure_data, ref_heatflux_data = helpfunc.load_experimental_data(ref_folder,
