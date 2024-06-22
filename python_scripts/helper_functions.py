@@ -15,7 +15,7 @@ def create_cfddatadict_for_solver(solvername, cfdfilenames):
 
     assert solvername in ['starccm', 'h3amr', 'ansys_inc','ansys_aselsan',
                             'eilmer', 'tau', 'cadence', 'gaspex', 'coda',
-                            'SU2', 'tau2']
+                            'SU2', 'tau2', 'overflow']
 
     keys, turb_model_list = evaluate_dictionary_key_from_filename(cfdfilenames)
     if solvername == 'starccm':
@@ -55,7 +55,7 @@ def create_cfddatadict_for_solver(solvername, cfdfilenames):
                                         dtype = 'float'
                                     )
 
-    if solvername in ['tau2','tau', 'coda']:
+    if solvername in ['tau2','tau', 'coda', 'overflow']:
         cfd_data_dict = load_data_files_ccm(cfdfilenames,
                                         keys,
                                         turb_model_list,
@@ -301,7 +301,8 @@ def read_ccm_file(filename):
 
 
 def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
-                                naming_dict={}, user_color = None):
+                                naming_dict={}, user_color = None,
+                                scale_fac = 1):
     linestyles_list = ['-','--','dashdot']
     mesh_label = tgt_mesh 
     try:
@@ -327,14 +328,14 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
             color = user_color
         # probably a better way to do this but will do for now 
         if tgt_turb_list is None:
-            plt.plot(data_dict[tgt_mesh][turb_model][:,0],
-                    data_dict[tgt_mesh][turb_model][:,1],
+            plt.plot(data_dict[tgt_mesh][turb_model][:-2,0],
+                    data_dict[tgt_mesh][turb_model][:-2,1] * scale_fac,
                     color = color,
                     label = labelname)
         else:
             if turb_model in tgt_turb_list:
-                plt.plot(data_dict[tgt_mesh][turb_model][:,0],
-                        data_dict[tgt_mesh][turb_model][:,1],
+                plt.plot(data_dict[tgt_mesh][turb_model][:-2,0],
+                        data_dict[tgt_mesh][turb_model][:-2,1]* scale_fac,
                         color = color,
                         label = labelname,
                         linestyle= linestyles_list[linestyle_counter])
@@ -361,12 +362,21 @@ def apply_axes_limits(run_nb, geom_nb):
 
 
 def plot_mesh_loop(cfd_data_dict, key_select, tgt_mesh_list = None, tgt_turb_list = None,
-                        naming_dict = {}):
-    for mesh in sorted(cfd_data_dict[key_select].keys()):
+                        naming_dict = {}, scaling_dict = {'wallP':1,
+                                                'wallYPlus':1,
+                                                'skinFrictionCoeff':1,
+                                                'wallHeatFlux':1}):
+
+    mesh_colors = ['blue','red','green','black','brown', 'violet']
+    for ind, mesh in enumerate(sorted(cfd_data_dict[key_select].keys())):
+        # Sorted is required to order the grids
+        print(scaling_dict[key_select])
         if tgt_mesh_list is None:
             plot_loop_turbulence_models(cfd_data_dict[key_select], mesh,
                                             tgt_turb_list = tgt_turb_list,
-                                            naming_dict = naming_dict)
+                                            naming_dict = naming_dict,
+                                            user_color=mesh_colors[ind],
+                                            scale_fac = scaling_dict[key_select])
         else:
             if mesh in tgt_mesh_list:
                 plot_loop_turbulence_models(cfd_data_dict[key_select], mesh,
@@ -424,3 +434,55 @@ def load_experimental_data(ref_folder, ref_pressure_file, ref_heatflux_file):
         ref_heatflux_data = None
 
     return np.array(ref_pressure_data, dtype = np.float64), np.array(ref_heatflux_data)
+
+
+
+
+def find_separation_onset_gradpx(data_dict, xbounds, tgt_mesh = None, turb_model = None):
+    """ Function will compute the gradient of pressure at the wall and find the onset
+        of separation as the maximum value in a user defined window.
+        Current implementation only for single turbulence model if an extra nested level.
+
+        Args:
+            data_dict (dict): containing the wall pressure data and associated meshes
+            xbounds (list): min and max value to limit the search window for maximum
+            tgt_mesh (str): name of mesh to consider in case we wish to limit to single mesh,
+                            default = None
+            turb_model (str): name of turb model to consider in case we have a turb model nesting
+                            default = None
+        
+        Returns:
+            res_list, mesh_list (np.array, list): resulting xlocation of separation onset, keys of meshes
+    """
+
+    key_select = 'wallP' # a default
+
+    xmin, xmax = xbounds
+    mesh_list = sorted(list(data_dict[key_select].keys()))
+
+    if tgt_mesh is not None:
+        mesh_list = list(tgt_mesh)
+
+    res_list = np.zeros(len(mesh_list))
+
+
+    for ind, mesh_key in enumerate(mesh_list):
+        if isinstance(data_dict[key_select][mesh_key], dict):
+            assert turb_model is not None
+            gradpx = np.gradient(data_dict[key_select][mesh_key][turb_model][:,1], data_dict[key_select][mesh_key][turb_model][:,0])
+            xvals = data_dict[key_select][mesh_key][turb_model][:,0]
+
+        else:
+            gradpx = np.gradient(data_dict[key_select][mesh_key][:,1], data_dict[key_select][mesh_key][:,0])
+            xvals = data_dict[key_select][mesh_key][:,0]
+
+        gradpx = np.nan_to_num(gradpx) # if mesh very fine and two similar coords we get a nan
+                                        # replace them by 0 and we neglect in evaluation
+        indx_select, = np.where((xvals > xmin) & (xvals < xmax))
+        gradpx_max = np.max(gradpx[indx_select])
+        print(gradpx_max)
+        ind_gradpx_max, = np.where(gradpx[indx_select] == gradpx_max)
+        res_list[ind] = xvals[indx_select][ind_gradpx_max[0]]
+        
+    return res_list, mesh_list
+
