@@ -9,8 +9,6 @@ PSIA_TO_PASCAL = 6894.76
 BTU_FT2_SEC_TO_W_M2 = 11356.538527
 
 
-
-
 def create_cfddatadict_for_solver(solvername, cfdfilenames):
 
     assert solvername in ['starccm', 'h3amr', 'ansys_inc','ansys_aselsan',
@@ -402,7 +400,7 @@ def load_experimental_data(ref_folder, ref_pressure_file, ref_heatflux_file):
             # If wish to compare data at axial location along symmetry we must transform
             # the experimental data
             ref_pressure_data[:,0] *= np.cos(np.deg2rad(6))
-            print("Yolooo")
+            print("Experimental data is transformed from ramp direction to axial distance")
         # if "run14" in ref_pressure_file:
         #     # Experimental data x-positions taken in direction of cone -> Xc
         #     # Does not seem the same for Geom2 data, looks like x correct, 
