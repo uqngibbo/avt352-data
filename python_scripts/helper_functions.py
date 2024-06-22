@@ -301,7 +301,7 @@ def read_ccm_file(filename):
 def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
                                 naming_dict={}, user_color = None,
                                 scale_fac = 1):
-    linestyles_list = ['-','--','dashdot']
+    linestyles_list = ['-','--','dashdot', 'dotted']
     mesh_label = tgt_mesh 
     try:
         mesh_label = naming_dict['mesh'][tgt_mesh]
