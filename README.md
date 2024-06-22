@@ -65,8 +65,20 @@ run45
 ## python_scripts
 Various scripts used to do postprocessing. The helper_functions.py are used in the other scripts and contain generic functions to read the data from the various participants.
 
-## refdata
+```python_scripts/
+├── analyse_holden_data_generic.py
+├── compare_holden_data.py
+├── compute_separation_peak.py
+├── helper_functions.py
+```
 
+```analyse_holden_data_generic.py``` allows the user to compare his simulation results of interest to the experiments, as well as compare various grids. 
+```compare_holder_data.py``` is used to create comparative plots between participants.
+
+### NOTE: **the experimental data of the 6/42 run 4 case is automatically transformed to the streamwise axial position when loaded! No need to retransfrom the data. NEED TO CHECK IF ALSO REQUIRED FOR run 6?**
+
+
+## refdata
 Folder with experimental data structured as follows
 
 ```refdata/
