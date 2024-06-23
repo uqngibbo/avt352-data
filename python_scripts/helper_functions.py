@@ -552,6 +552,43 @@ def filter_global_dict_based_on_parameters(cfd_dict,
             res_dict[cfdcode][variable] = tmp_dict
     return res_dict
 
+
+def find_peak_value(data_dict, tgt_mesh = None, key_select = None, start_xcoord = None,
+                    end_xcoord = None):
+    start_xind = 0
+    end_xind = -1
+    mesh_list = sorted(list(data_dict[key_select].keys()))
+
+    if tgt_mesh is not None:
+        mesh_list = list(tgt_mesh)
+
+    xres_list = np.zeros(len(mesh_list))
+    pres_list = np.zeros(len(mesh_list))
+
+    def find_nearest(array, value): # from stackoverflow, 
+                                    # https://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array
+        array = np.asarray(array)
+        idx = (np.abs(array - value)).argmin()
+        return idx #array[idx]
+
+    for ind, mesh_key in enumerate(mesh_list):
+
+        if start_xcoord is not None:
+            start_xind = find_nearest(data_dict[key_select][mesh_key][:,0], start_xcoord)
+
+        if end_xcoord is not None:
+            end_xind = find_nearest(data_dict[key_select][mesh_key][:,0], end_xcoord)
+
+        xvals = data_dict[key_select][mesh_key][start_xind:end_xind,0]
+        pdata = data_dict[key_select][mesh_key][start_xind:end_xind,1]
+        p_max = np.max(pdata)
+        ind_p_max, = np.where(pdata == p_max)
+        xres_list[ind] = xvals[ind_p_max[0]]
+        pres_list[ind] = p_max
+
+    return xres_list, pres_list,  mesh_list
+
+
 def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux']):
     scaling_dict = {'wallP':1e-3, 'wallHeatFlux': 1e-6}
     round_dict = {'wallP':2, 'wallHeatFlux': 3}
@@ -578,6 +615,21 @@ def compute_separation_onsets_solvers(data_dict, xbounds):
         res_sep, turb = find_separation_onset_gradpx(data_dict[cfdcode], xbounds)
         tmp_dict[cfdcode] =  dict([(turb, round(val,3)) for val, turb in zip(res_sep, turb)])
     return tmp_dict
+
+
+def compute_peak_values_solvers(data_dict, tgt_var, start_xcoord = None,
+                                                    end_xcoord = None):
+    tmp_dict = {}
+    for cfdcode in data_dict.keys():
+        tmp_dict[cfdcode] = {}
+        res_peak, res_loc, turb = find_peak_value(data_dict[cfdcode],
+                                                key_select = tgt_var,
+                                                start_xcoord= start_xcoord,
+                                                end_xcoord = end_xcoord)
+        tmp_dict[cfdcode]['peak'] =  dict([(turb, round(val,3)) for val, turb in zip(res_peak, turb)])
+        tmp_dict[cfdcode]['peak_loc'] =  dict([(turb, round(val,3)) for val, turb in zip(res_loc, turb)])
+    return tmp_dict
+
 
 
 def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):

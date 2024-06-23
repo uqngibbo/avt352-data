@@ -172,6 +172,10 @@ elif "4" in run_nb:
 
 
 sep_dict = helpfunc.compute_separation_onsets_solvers(reduced_dict, xbounds)
+res_peak_p = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallP')
+res_peak_q = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallHeatFlux',
+                                                                start_xcoord= 1,
+                                                                end_xcoord = None)
 
 
 #-- go back to orginal directory---#
