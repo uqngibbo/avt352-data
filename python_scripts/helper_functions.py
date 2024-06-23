@@ -549,3 +549,69 @@ def filter_global_dict_based_on_parameters(cfd_dict,
 
             res_dict[cfdcode][variable] = tmp_dict
     return res_dict
+
+def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux']):
+    res_dict = {}
+    for cfdcode in cfd_dict.keys():
+        res_dict[cfdcode] = {}
+        for variable in keys_list:
+            for ind, (turb_mod, vals) in enumerate(cfd_dict[cfdcode][variable].items()):
+                if (ind == 0) and (variable == keys_list[0]):
+                    res_dict[cfdcode][turb_mod] = {}
+                res_dict[cfdcode][turb_mod]['integrated_'+variable] = int(np.trapz(
+                                                                            vals[:,1],
+                                                                            vals[:,0]
+                                                                        ))
+    return res_dict
+
+def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
+    table_caption = f"Integrated wall quantities for run {run_nb.replace('run','')}"
+    table_label = f"res_comparison_integrated_{run_nb}"
+
+    # Mapping of old names to new names
+    if mapping_dict is None:
+        mapping_dict = {
+            'gaspex': 'GASPex',
+            'eilmer': 'Eilmer',
+            'starccm': 'STAR-CCM+',
+            'komega06': 'k-$\\omega$ 2006',
+            'komega': 'k-$\\omega$ 2006',
+            'SST': 'k-$\\omega$ SST'
+        }
+
+    # Function to get the new name from the mapping
+    def get_new_name(old_name):
+        return mapping_dict.get(old_name, old_name)
+        
+    # Start creating the LaTeX table
+    latex_table = """
+    \\begin{table}[ht]
+    \\centering
+    \\begin{tabular}{llll}
+    \\hline
+    \\textbf{Solver} & \\textbf{Turbulence Model} & \\textbf{pressure (Pa)} & \\textbf{heat flux (W/($m^2$))} \\\\
+    \\hline
+    \\hline
+    """
+
+    # Iterate through the nested dictionary to fill in the table
+    for main_key, sub_dict in nested_dict.items():
+        new_main_key = get_new_name(main_key)
+        first_entry = True
+        for sub_key, values in sub_dict.items():
+            new_sub_key = get_new_name(sub_key)
+            if first_entry:
+                latex_table += f"{new_main_key} & {new_sub_key} & {values['integrated_wallP']} & {values['integrated_wallHeatFlux']} \\\\\n"
+                first_entry = False
+            else:
+                latex_table += f" & {new_sub_key} & {values['integrated_wallP']} & {values['integrated_wallHeatFlux']} \\\\\n"
+        latex_table += "\\hline\n"
+
+    # End the table
+    latex_table += f"""
+    \\end{{tabular}}
+    \\caption{{{table_caption}}}
+    \\label{{tab:{table_label}}}
+    \\end{{table}}
+    """
+    return latex_table
