@@ -57,7 +57,7 @@ ylim_low_dict = {
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run37'
+run_nb = 'run45'
 geom_nb = "geom2"
 solver_color = True
 
@@ -135,89 +135,22 @@ parameter_matrix = {
             #             },
 
             # for run 45
-                    # 'starccm':{ 'mesh':'mesh09',
-                    #             'naming_dict': {'mesh':
-                    #                                 {'mesh09': 'STAR-CCM+'},
-                    #                             'turb':
-                    #                                 {'SST': 'k-$\\omega$ SST'} 
-                    #                         }
-                    #             },
-                    # 'eilmer':{ 'mesh':'mesh1',
-                    #             'naming_dict': {'mesh':
-                    #                                 {'mesh1': 'Eilmer'},
-                    #                             'turb':
-                    #                                 {'komega': 'Wilcox k-$\\omega$ 2006'} 
-                    #                         }  
-                    #             },
-                    # 'ansys_aselsan':{ 'mesh':'mesh2',
-                    #             'naming_dict': {'mesh':
-                    #                                 {'mesh2': 'Ansys Fluent (Aselsan)'},
-                    #                             'turb':
-                    #                                 {'SST': 'k-$\\omega$ SST'} 
-                    #                         }  
-                    #             },
-
-                    # 'cadence':{ 'mesh':'meshXX',
-                    #             'turb_model_list': ['SSCEARSM_Prt086Lemmon'],
-                    #             'naming_dict': {'mesh':
-                    #                                 {'meshXX': 'Fidelity Flow DBS'},
-                    #                             'turb':
-                    #                                 {'SSCEARSM_Prt086Lemmon': 'SSC-EARSM'} 
-                    #                         }  
-                    #             },
-                    # ##--------second plot------------------------#
-                    # 'tau':{ 'mesh':'meshXX',
-                    #             'turb_model_list': ['Menter_SST', 'SAnegN=646308QCR=off'],
-                    #             'naming_dict': {'mesh':
-                    #                                 {'meshXX': 'TAU'},
-                    #                             'turb':
-                    #                                 {'Menter_SST': 'k-$\\omega$ SST',
-                    #                                 'SAnegN=646308QCR=off': 'SA-neg'} 
-                    #                         }  
-                    #             },
-                    # 'coda':{ 'mesh':'meshXX',
-                    #             'naming_dict': {'mesh':
-                    #                                 {'meshXX': 'HyperCODA'},
-                    #                             'turb':
-                    #                                 {'SAneg': 'SA-neg'} 
-                    #                         }  
-                    #             },
-                    # # ##--------------------------------------------#
-                    # 'ansys_inc':{ 'mesh':'meshXX',
-                    #             'naming_dict': {'mesh':
-                    #                                 {'meshXX': 'Ansys Fluent (Ansys Inc.)'},
-                    #                             'turb':
-                    #                                 {'GEKO': 'GEKO'} 
-                    #                         }  
-                    #             },
-                    # # 'cadence':{ 'mesh':'meshXXX',
-                    # #             'turb_model_list': ['SSTa10355_Prt086Lemmon','SBSLPrt086'],
-                    # #             'naming_dict': {'mesh':
-                    # #                                 {'meshXXX': ''},
-                    # #                             'turb':
-                    # #                                 {'SBSLPrt086': 'SBSL-EARSM',
-                    # #                                 'SSTa10355_Prt086Lemmon': 'k-$\\omega$ SST'} 
-                    # #                         }  
-                    # #             },
-                    # ##--------third plot------------------------#
-                    # 'tau':{ 'mesh':'meshXX',
-                    #             'turb_model_list': ['SSGLRRw'],
-                    #             'naming_dict': {'mesh':
-                    #                                 {'meshXX': 'TAU'},
-                    #                             'turb':
-                    #                                 {'SSGLRRw': 'SSG/LRR 2010',
-                    #                                 } 
-                    #                         }  
-                    #             },
-                    # 'cadence':{ 'mesh':'meshXX',
-                    #             'turb_model_list': ['SSCEARSM_Prt086Lemmon'],
-                    #             'naming_dict': {'mesh':
-                    #                                 {'meshXX': 'Fidelity Flow DBS'},
-                    #                             'turb':
-                    #                                 {'SSCEARSM_Prt086Lemmon': 'SSC-EARSM',
-                    #                                 } 
-                    #                         }  
-                    #             },
+            'starccm':{ 'mesh':'mesh09',
+                        },
+            'eilmer':{ 'mesh':'mesh1',
+                        },
+            'ansys_aselsan':{ 'mesh':'mesh2',
+                        },
+            'cadence':{ 'mesh':'meshXX',
+                        },
+                    ##--------second plot------------------------#
+            'tau':{ 'mesh':'meshXX',
+                },
+            'coda':{ 'mesh':'meshXX',
+                    },
+                    # ##--------------------------------------------#
+            'ansys_inc':{ 'mesh':'meshXX',
+                        },
                     ##--------------------------------------------#
         # run 28
                 # 'gaspex':{ 'mesh':'mesh00',
@@ -250,28 +183,6 @@ parameter_matrix = {
                 #                                 'SSTa1coeff0355': 'k-$\\omega$ SST \n a1 = 0.355'} 
                 #                         }
                 #             } 
-        # run 34
-        # 'gaspex':{ 'mesh':'mesh00',
-        #     'naming_dict': {'mesh':
-        #                         {'mesh00': 'GASPex'},
-        #                     'turb':
-        #                         {'komega06': 'Wilcox k-$\\omega$ 2006'} 
-        #                 }  
-        #         },
-        # 'eilmer':{ 'mesh':'mesh1',
-        #             'naming_dict': {'mesh':
-        #                                 {'mesh1': 'Eilmer'},
-        #                             'turb':
-        #                                 {'komega': 'Wilcox k-$\\omega$ 2006'},
-        #             }
-        #     },
-        # 'starccm':{ 'mesh':'mesh09',
-        #             'naming_dict': {'mesh':
-        #                                 {'mesh09': 'STAR-CCM+'},
-        #                             'turb':
-        #                                 {'SST': 'k-$\\omega$ SST'} 
-        #                         }
-        #             },
         # run 33
         # 'gaspex':{ 'mesh':'mesh00',
         #     'naming_dict': {'mesh':
@@ -338,14 +249,18 @@ parameter_matrix = {
             #                                 {'SST': 'k-$\\omega$ SST'} 
             #                         }
             #             }  
-        # run 41, 37
-        'gaspex':{ 'mesh':'mesh00',
-                },
-        'eilmer':{ 'mesh':'mesh1',
-            },
-        'starccm':{ 'mesh':'mesh09',
-                    },
-        }
+
+
+        # run 41, 37, 34
+        # 'gaspex':{ 'mesh':'mesh00',
+        #         },
+        # 'eilmer':{ 'mesh':'mesh1',
+        #     },
+        # 'starccm':{ 'mesh':'mesh09',
+        #             },
+
+    #-------------------------------------------------_#
+    }
 
 
 res_folder = "_".join(("comparison",run_nb))

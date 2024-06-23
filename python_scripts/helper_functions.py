@@ -565,7 +565,7 @@ def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux'])
                                             )
                                         ) * scaling_dict[variable]
                 int_val = round(int_val,round_dict[variable])
-                print(variable)
+                # print(variable)
                 res_dict[cfdcode][turb_mod]['integrated_'+variable] = int_val
     return res_dict
 
@@ -589,7 +589,13 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
             'SST': 'k-$\\omega$ SST',
             'SSCEARSM_Prt086Lemmon': 'SSC-EARSM',
             'SSTa10355': 'k-$\\omega$ SST',
-            'GEKO': 'GEKO'
+            'SSTa10355_Prt086Lemmon': 'k-$\\omega$ SST',
+            'SAnegN=646308QCR=off': 'SA-neg',
+            'Menter_SST': 'k-$\\omega$ SST',
+            'SSGLRRw': 'SSG/LRR-$\\omega$ 2010',
+            'GEKO': 'GEKO',
+            'SAneg': 'SA-neg',
+            'SBSLPrt086': 'SBSL EARSM'
         }
 
     # Function to get the new name from the mapping
