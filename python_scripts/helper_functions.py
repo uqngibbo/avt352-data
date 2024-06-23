@@ -619,14 +619,18 @@ def compute_separation_onsets_solvers(data_dict, xbounds):
 
 def compute_peak_values_solvers(data_dict, tgt_var, start_xcoord = None,
                                                     end_xcoord = None):
+    scaling_dict = {'wallP':1e-3, 'wallHeatFlux': 1e-6}
+    round_dict = {'wallP':2, 'wallHeatFlux': 3}
     tmp_dict = {}
     for cfdcode in data_dict.keys():
         tmp_dict[cfdcode] = {}
-        res_peak, res_loc, turb = find_peak_value(data_dict[cfdcode],
+        res_loc, res_peak, turb = find_peak_value(data_dict[cfdcode],
                                                 key_select = tgt_var,
                                                 start_xcoord= start_xcoord,
                                                 end_xcoord = end_xcoord)
-        tmp_dict[cfdcode]['peak'] =  dict([(turb, round(val,3)) for val, turb in zip(res_peak, turb)])
+        tmp_dict[cfdcode]['peak'] =  dict([(turb, round(val*scaling_dict[tgt_var],
+                                                        round_dict[tgt_var])) 
+                                                for val, turb in zip(res_peak, turb)])
         tmp_dict[cfdcode]['peak_loc'] =  dict([(turb, round(val,3)) for val, turb in zip(res_loc, turb)])
     return tmp_dict
 
