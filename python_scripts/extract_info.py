@@ -148,6 +148,32 @@ integrated_dict = helpfunc.compute_integral_quantities(reduced_dict)
 latex_table = helpfunc.create_latex_table_integrated(integrated_dict, run_nb)
 print(latex_table)
 
+
+
+#--------------Separation onset-----------------#
+# Specify the bounds too look for largest grad of pressure. Run dependent
+# NOTE: We might have to Taylor bounds for different solvers, TBD
+if "14" in run_nb:
+    xbounds = [1.0,2.33]  # for run 14
+elif "28" in run_nb:
+    xbounds = [1.0,2.37]  # for run 28
+elif "33" in run_nb:
+    xbounds = [1.0,2.35] 
+elif "34" in run_nb:
+    xbounds = [1.0,2.35]
+elif "37" in run_nb:
+    xbounds = [1.0,2.35] 
+elif "41" in run_nb:
+    xbounds = [2.0,2.35]  
+elif "45" in run_nb:
+    xbounds = [1.0,2.35] 
+elif "4" in run_nb:
+    xbounds = [1.0,2.63] 
+
+
+sep_dict = helpfunc.compute_separation_onsets_solvers(reduced_dict, xbounds)
+
+
 #-- go back to orginal directory---#
 os.chdir(work_dir)
 

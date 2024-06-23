@@ -483,6 +483,8 @@ def find_separation_onset_gradpx(data_dict, xbounds, tgt_mesh = None, turb_model
 
     res_list = np.zeros(len(mesh_list))
 
+    # NOTE: function will actually work if the input dict does not contain the
+    #          'mesh' key and we directly have a number of turbulence models
 
     for ind, mesh_key in enumerate(mesh_list):
         if isinstance(data_dict[key_select][mesh_key], dict):
@@ -498,7 +500,7 @@ def find_separation_onset_gradpx(data_dict, xbounds, tgt_mesh = None, turb_model
                                         # replace them by 0 and we neglect in evaluation
         indx_select, = np.where((xvals > xmin) & (xvals < xmax))
         gradpx_max = np.max(gradpx[indx_select])
-        print(gradpx_max)
+        # print(gradpx_max)
         ind_gradpx_max, = np.where(gradpx[indx_select] == gradpx_max)
         res_list[ind] = xvals[indx_select][ind_gradpx_max[0]]
         
@@ -568,6 +570,15 @@ def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux'])
                 # print(variable)
                 res_dict[cfdcode][turb_mod]['integrated_'+variable] = int_val
     return res_dict
+
+
+def compute_separation_onsets_solvers(data_dict, xbounds):
+    tmp_dict = {}
+    for cfdcode in data_dict.keys():
+        res_sep, turb = find_separation_onset_gradpx(data_dict[cfdcode], xbounds)
+        tmp_dict[cfdcode] =  dict([(turb, round(val,3)) for val, turb in zip(res_sep, turb)])
+    return tmp_dict
+
 
 def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
     table_caption = f"Integrated wall quantities for run {run_nb.replace('run','')}"
