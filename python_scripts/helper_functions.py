@@ -705,3 +705,87 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
     \\end{{table}}
     """
     return latex_table
+
+
+def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
+    table_caption = f"Separation, peak values and associated location for run {run_nb.replace('run','')}"
+    table_label = f"res_comparison_separation_{run_nb}"
+
+    # Mapping of old names to new names
+    if mapping_dict is None:
+        mapping_dict = {
+            'gaspex': 'GASPex',
+            'eilmer': 'Eilmer',
+            'cadence': 'Cadence Fidelity',
+            'ansys_aselsan': 'Ansys Fluent (Aselsan)',
+            'ansys_inc': 'Ansys Fluent (Ansys Inc)',
+            'tau': 'TAU',
+            'coda':'HyperCODA',
+            'starccm': 'STAR-CCM+',
+            'komega06': 'k-$\\omega$ 2006',
+            'komega': 'k-$\\omega$ 2006',
+            'SST': 'k-$\\omega$ SST',
+            'SSCEARSM_Prt086Lemmon': 'SSC-EARSM',
+            'SSTa10355': 'k-$\\omega$ SST',
+            'SSTa10355_Prt086Lemmon': 'k-$\\omega$ SST',
+            'SAnegN=646308QCR=off': 'SA-neg',
+            'Menter_SST': 'k-$\\omega$ SST',
+            'SSGLRRw': 'SSG/LRR-$\\omega$ 2010',
+            'GEKO': 'GEKO',
+            'SAneg': 'SA-neg',
+            'SBSLPrt086': 'SBSL EARSM',
+            'SST1T': 'k-$\\omega$ SST',
+            'SA1T':'SA',
+            'SST2T': 'k-$\\omega$ SST 2-T model',
+            'SA2T':'SA 2-T model',
+        }
+
+    # Function to get the new name from the mapping
+    def get_new_name(old_name):
+        return mapping_dict.get(old_name, old_name)
+        
+    # Start creating the LaTeX table
+    latex_table = """
+    \\begin{table}[ht]
+    \\begin{tabular}{p{1.5cm}p{2.6cm}p{1.1cm}p{1.3cm}p{1.4cm}p{1.8cm}p{1.4cm}}
+    \\hline
+    \\textbf{Solver} & \\textbf{Turbulence Model} & \\textbf{x$_{sep}$ (m)} &  \\textbf{p$_{peak}$ (kPa)} & \\textbf{p$_{peak,loc}$ (m)} &  \\textbf{q$_{peak}$ (MW/($m^2$))} &  \\textbf{q$_{peak,loc}$ (m)} \\\\
+    \\hline
+    \\hline
+    """
+
+    # Iterate through the nested dictionary to fill in the table
+    for main_key, sub_dict in nested_dict.items():
+        new_main_key = get_new_name(main_key)
+        first_entry = True
+        for sub_key, values in sub_dict.items():
+            new_sub_key = get_new_name(sub_key)
+            if first_entry:
+                latex_table += f"{new_main_key} & {new_sub_key} & {values['separation_loc']} & {values['peak_p']} & {values['peak_p_loc']} & {values['peak_q']} & {values['peak_q_loc']}\\\\\n"
+                first_entry = False
+            else:
+                latex_table += f" & {new_sub_key} & {values['separation_loc']} & {values['peak_p']} & {values['peak_p_loc']} & {values['peak_q']} & {values['peak_q_loc']} \\\\\n"
+        latex_table += "\\hline\n"
+
+    # End the table
+    latex_table += f"""
+    \\end{{tabular}}
+    \\caption{{{table_caption}}}
+    \\label{{tab:{table_label}}}
+    \\end{{table}}
+    """
+    return latex_table
+
+def join_separation_dicts(sep_dict, pres_dict, heat_dict):
+    tmp_dict = {}
+    for cfdsolver in sep_dict.keys():
+        tmp_dict[cfdsolver] = {}
+        for turb_model in sep_dict[cfdsolver].keys():
+            tmp_dict[cfdsolver][turb_model] = {}
+            tmp_dict[cfdsolver][turb_model]['separation_loc'] = sep_dict[cfdsolver][turb_model]
+            tmp_dict[cfdsolver][turb_model]['peak_p'] = pres_dict[cfdsolver]['peak'][turb_model]
+            tmp_dict[cfdsolver][turb_model]['peak_p_loc'] = pres_dict[cfdsolver]['peak_loc'][turb_model]
+            tmp_dict[cfdsolver][turb_model]['peak_q'] = heat_dict[cfdsolver]['peak'][turb_model]
+            tmp_dict[cfdsolver][turb_model]['peak_q_loc'] = heat_dict[cfdsolver]['peak_loc'][turb_model]
+
+    return tmp_dict
