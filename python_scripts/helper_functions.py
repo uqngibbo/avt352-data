@@ -551,6 +551,8 @@ def filter_global_dict_based_on_parameters(cfd_dict,
     return res_dict
 
 def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux']):
+    scaling_dict = {'wallP':1e-3, 'wallHeatFlux': 1e-6}
+    round_dict = {'wallP':2, 'wallHeatFlux': 3}
     res_dict = {}
     for cfdcode in cfd_dict.keys():
         res_dict[cfdcode] = {}
@@ -558,10 +560,13 @@ def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux'])
             for ind, (turb_mod, vals) in enumerate(cfd_dict[cfdcode][variable].items()):
                 if (ind == 0) and (variable == keys_list[0]):
                     res_dict[cfdcode][turb_mod] = {}
-                res_dict[cfdcode][turb_mod]['integrated_'+variable] = int(np.trapz(
-                                                                            vals[:,1],
-                                                                            vals[:,0]
-                                                                        ))
+                int_val = int(np.trapz(vals[:,1],
+                                            vals[:,0]
+                                            )
+                                        ) * scaling_dict[variable]
+                int_val = round(int_val,round_dict[variable])
+
+                res_dict[cfdcode][turb_mod]['integrated_'+variable] = int_val
     return res_dict
 
 def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
@@ -589,7 +594,7 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
     \\centering
     \\begin{tabular}{llll}
     \\hline
-    \\textbf{Solver} & \\textbf{Turbulence Model} & \\textbf{pressure (Pa)} & \\textbf{heat flux (W/($m^2$))} \\\\
+    \\textbf{Solver} & \\textbf{Turbulence Model} & \\textbf{pressure (kPa)} & \\textbf{heat flux (MW/($m^2$))} \\\\
     \\hline
     \\hline
     """
