@@ -557,15 +557,15 @@ def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux'])
     for cfdcode in cfd_dict.keys():
         res_dict[cfdcode] = {}
         for variable in keys_list:
-            for ind, (turb_mod, vals) in enumerate(cfd_dict[cfdcode][variable].items()):
-                if (ind == 0) and (variable == keys_list[0]):
+            for _, (turb_mod, vals) in enumerate(cfd_dict[cfdcode][variable].items()):
+                if (variable == keys_list[0]):
                     res_dict[cfdcode][turb_mod] = {}
                 int_val = int(np.trapz(vals[:,1],
                                             vals[:,0]
                                             )
                                         ) * scaling_dict[variable]
                 int_val = round(int_val,round_dict[variable])
-
+                print(variable)
                 res_dict[cfdcode][turb_mod]['integrated_'+variable] = int_val
     return res_dict
 
@@ -578,10 +578,18 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
         mapping_dict = {
             'gaspex': 'GASPex',
             'eilmer': 'Eilmer',
+            'cadence': 'Cadence Fidelity',
+            'ansys_aselsan': 'Ansys Fluent (Aselsan)',
+            'ansys_inc': 'Ansys Fluent (Ansys Inc)',
+            'tau': 'TAU',
+            'coda':'HyperCODA',
             'starccm': 'STAR-CCM+',
             'komega06': 'k-$\\omega$ 2006',
             'komega': 'k-$\\omega$ 2006',
-            'SST': 'k-$\\omega$ SST'
+            'SST': 'k-$\\omega$ SST',
+            'SSCEARSM_Prt086Lemmon': 'SSC-EARSM',
+            'SSTa10355': 'k-$\\omega$ SST',
+            'GEKO': 'GEKO'
         }
 
     # Function to get the new name from the mapping
