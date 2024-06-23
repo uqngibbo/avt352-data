@@ -595,7 +595,11 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
             'SSGLRRw': 'SSG/LRR-$\\omega$ 2010',
             'GEKO': 'GEKO',
             'SAneg': 'SA-neg',
-            'SBSLPrt086': 'SBSL EARSM'
+            'SBSLPrt086': 'SBSL EARSM',
+            'SST1T': 'k-$\\omega$ SST',
+            'SA1T':'SA',
+            'SST2T': 'k-$\\omega$ SST 2-T model',
+            'SA2T':'SA 2-T model',
         }
 
     # Function to get the new name from the mapping
