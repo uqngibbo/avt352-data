@@ -1,5 +1,8 @@
 import os
 import glob
+import copy
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,6 +10,21 @@ import matplotlib.pyplot as plt
 INCH_TO_M = 2.54e-2
 PSIA_TO_PASCAL = 6894.76
 BTU_FT2_SEC_TO_W_M2 = 11356.538527
+mm_to_m = 1e-3
+
+length_dict = {'geom1': {'total':2852.2676 * mm_to_m,
+                        'cone':2642.2604 * mm_to_m,
+                        'flare': 210.0072 * mm_to_m,
+                        'angle_cone': 6,
+                        'angle_flare': 42  
+                    },
+                'geom2': {'total': 2504.186 * mm_to_m,
+                        'cone': 2353.056 * mm_to_m,
+                        'flare': 151.130 * mm_to_m,
+                        'angle_cone': 7,
+                        'angle_flare': 40  
+                   } 
+            }
 
 
 def create_cfddatadict_for_solver(solvername, cfdfilenames):
@@ -486,3 +504,48 @@ def find_separation_onset_gradpx(data_dict, xbounds, tgt_mesh = None, turb_model
         
     return res_list, mesh_list
 
+
+
+def find_indices_between_vals(array, minval, maxval):
+    inds, = np.where((array > minval) & (array < maxval))
+    return inds
+
+
+def filter_data_based_on_axial_position(turb_dict, geom_nb, xmin = None, xmax = None):
+    """ This functions reads in a dictionary of numpy arrays corresponding to the
+        turbulence models selected and filters the values based on the
+        streamwise / axial position
+    """
+
+    # define bounds to consider
+    if xmin is None:
+        xmin = 0
+    if xmax is None:
+        xmax = length_dict[geom_nb]['total']
+    
+    tmp_dict = copy.deepcopy(turb_dict)
+    for key, vals in turb_dict.items():
+        tmp_dict[key] = vals[find_indices_between_vals(vals[:,0], xmin, xmax)]
+
+    return tmp_dict
+
+
+def filter_global_dict_based_on_parameters(cfd_dict,
+                                            param_dict,
+                                            geom_nb,
+                                            keys_list = ['wallP', 'wallHeatFlux']):
+    """ Functions reduces the global cfd data dict by selecting only the
+        results set by paramater dict. On top of that only the data
+        along the cone-flare geometry is selected based on the length of the
+        cone-flare set by geom_nb
+    """
+
+    res_dict = {}
+    for _, cfdcode in enumerate(param_dict.keys()):
+        res_dict[cfdcode] = {}
+        for variable in keys_list:
+            turb_dict = cfd_dict[cfdcode][variable][param_dict[cfdcode]['mesh']]
+            tmp_dict = filter_data_based_on_axial_position(turb_dict, geom_nb)
+
+            res_dict[cfdcode][variable] = tmp_dict
+    return res_dict
