@@ -421,6 +421,12 @@ def load_experimental_data(ref_folder, ref_pressure_file, ref_heatflux_file):
             # the experimental data
             ref_pressure_data[:,0] *= np.cos(np.deg2rad(6))
             print("Experimental data is transformed from ramp direction to axial distance")
+        if "run6_" in ref_pressure_file:
+            # Experimental data x-positions taken in direction of cone -> Xc
+            # If wish to compare data at axial location along symmetry we must transform
+            # the experimental data
+            ref_pressure_data[:,0] *= np.cos(np.deg2rad(6))
+            print("Experimental data is transformed from ramp direction to axial distance")
         # if "run14" in ref_pressure_file:
         #     # Experimental data x-positions taken in direction of cone -> Xc
         #     # Does not seem the same for Geom2 data, looks like x correct, 
@@ -446,6 +452,11 @@ def load_experimental_data(ref_folder, ref_pressure_file, ref_heatflux_file):
             # the experimental data
             ref_heatflux_data[:,0] *= np.cos(np.deg2rad(6))
 
+        if "run6_" in ref_heatflux_file:
+            # Experimental data x-positions taken in direction of cone -> Xc
+            # If wish to compare data at axial location along symmetry we must transform
+            # the experimental data
+            ref_heatflux_data[:,0] *= np.cos(np.deg2rad(6))
         # if "run14" in ref_heatflux_file:
         #     ref_pressure_data[:,0] *= np.cos(np.deg2rad(7))
     except FileNotFoundError:
