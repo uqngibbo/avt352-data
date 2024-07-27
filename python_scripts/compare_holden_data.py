@@ -26,7 +26,7 @@ ylim_up_dict = {'run14': {'wallHeatFlux':0.7e6, 'noseHeatFlux':0.1e6, 'wallP':5e
                         'noseHeatFlux':0.025e6,
                         'wallP':4e3
                     },
-            'run34': {'wallP':10e3, 'wallHeatFlux':2.4e6,  'noseHeatFlux':0.25e6},
+            'run34': {'wallP':10e3, 'wallHeatFlux':2.4e6,  'noseHeatFlux':0.35e6},
             'run41': {'wallP':5e3, 'wallHeatFlux':3.6e6,  'noseHeatFlux':0.25e6},
             'run45': {'wallP':20e3, 'wallHeatFlux':5.2e6,  'noseHeatFlux':0.8e6},
             'run4': {'wallP':10e3, 'wallHeatFlux':4.0e6,  'noseHeatFlux':0.4e6},
@@ -57,6 +57,7 @@ run_nb = 'run37'
 geom_nb = "geom2"
 solver_color = True
 zoom_flag = False # If true, focus on nose cone region
+
 
 
 # Defines the solvers selected, the grid and turbulence models
@@ -96,9 +97,9 @@ parameter_matrix = {
             #                                 'SA1T': 'SA'} 
             #                         }
             #             },
-            # 'SU2':{ 'mesh':'meshVeryFine',
+            # 'SU2':{ 'mesh':'meshXX',
             #             'naming_dict': {'mesh':
-            #                                 {'meshVeryFine': 'SU2'},
+            #                                 {'meshXX': 'SU2'},
             #                             'turb':
             #                                 {'SST': 'k-$\\omega$ SST'} 
             #                         }  
@@ -161,7 +162,14 @@ parameter_matrix = {
                     #                                 {'SSCEARSM_Prt086Lemmon': 'SSC-EARSM'} 
                     #                         }  
                     #             },
-                    # ##--------second plot------------------------#
+                    # 'SU2':{ 'mesh':'meshXX',
+                    #     'naming_dict': {'mesh':
+                    #                         {'meshXX': 'SU2'},
+                    #                     'turb':
+                    #                         {'SST': 'k-$\\omega$ SST'} 
+                    #                 }
+                    #     },
+                    # # ##--------second plot------------------------#
                     # 'tau':{ 'mesh':'meshXX',
                     #             'turb_model_list': ['Menter_SST', 'SAnegN=646308QCR=off'],
                     #             'naming_dict': {'mesh':
@@ -178,7 +186,7 @@ parameter_matrix = {
                     #                                 {'SAneg': 'SA-neg'} 
                     #                         }  
                     #             },
-                    # # ##--------------------------------------------#
+                    # # # ##--------------------------------------------#
                     # 'ansys_inc':{ 'mesh':'meshXX',
                     #             'naming_dict': {'mesh':
                     #                                 {'meshXX': 'Ansys Fluent (Ansys Inc.)'},
@@ -245,7 +253,15 @@ parameter_matrix = {
                 #                                 {'SSTa1coeff031': 'k-$\\omega$ SST \n a1 = 0.31',
                 #                                 'SSTa1coeff0355': 'k-$\\omega$ SST \n a1 = 0.355'} 
                 #                         }
-                #             } 
+                #             },
+                # 'SU2':{ 'mesh':'meshXX',
+                #         'naming_dict': {'mesh':
+                #                             {'meshXX': 'SU2'},
+                #                         'turb':
+                #                             {'SST': 'k-$\\omega$ SST'} 
+                #                     }
+                #         }
+                
         # run 34
         # 'gaspex':{ 'mesh':'mesh00',
         #     'naming_dict': {'mesh':
@@ -268,6 +284,13 @@ parameter_matrix = {
         #                                 {'SST': 'k-$\\omega$ SST'} 
         #                         }
         #             },
+        # 'SU2':{ 'mesh':'meshXX',
+        #         'naming_dict': {'mesh':
+        #                             {'meshXX': 'SU2'},
+        #                         'turb':
+        #                             {'SST': 'k-$\\omega$ SST'} 
+        #                     }
+        #         }
         # run 33
         # 'gaspex':{ 'mesh':'mesh00',
         #     'naming_dict': {'mesh':
@@ -297,7 +320,14 @@ parameter_matrix = {
         #                             {'GEKO': 'GEKO'} 
         #                     }  
         #         },
-            # # run 14
+        # 'SU2':{ 'mesh':'meshXX',
+        #         'naming_dict': {'mesh':
+        #                             {'meshXX': 'SU2'},
+        #                         'turb':
+        #                             {'SST': 'k-$\\omega$ SST'} 
+        #                     }
+        #         }
+            # run 14
             # 'gaspex':{ 'mesh':'mesh00',
             #     'naming_dict': {'mesh':
             #                         {'mesh00': 'GASPex'},
@@ -327,14 +357,14 @@ parameter_matrix = {
             #                                 {'GEKO': 'GEKO'} 
             #                         }
             #             } ,
-            # 'SU2':{ 'mesh':'meshVeryFine',
+            # 'SU2':{ 'mesh':'meshXX',
             #             'naming_dict': {'mesh':
-            #                                 {'meshVeryFine': 'SU2'},
+            #                                 {'meshXX': 'SU2'},
             #                             'turb':
             #                                 {'SST': 'k-$\\omega$ SST'} 
             #                         }
             #             }  
-        # run 41, 37
+        # # run 41, 37
         'gaspex':{ 'mesh':'mesh00',
             'naming_dict': {'mesh':
                                 {'mesh00': 'GASPex'},
@@ -356,11 +386,21 @@ parameter_matrix = {
                                         {'SST': 'k-$\\omega$ SST'} 
                                 }
                     },
+        'SU2':{ 'mesh':'meshXX',
+                    'naming_dict': {'mesh':
+                                        {'meshXX': 'SU2'},
+                                    'turb':
+                                        {'SST': 'k-$\\omega$ SST'} 
+                                }
+                    }  
 
         }
 
 if zoom_flag:
-    del parameter_matrix['gaspex']
+    try:
+        del parameter_matrix['gaspex']
+    except KeyError:
+        pass
 
 ref_pressure_file = '_'.join((run_nb,"pressure.csv"))
 ref_heatflux_file = '_'.join((run_nb,"heatFlux.csv"))
@@ -464,7 +504,7 @@ if zoom_flag:
 
 plt.ylabel('Pressure (Pa)')
 plt.tight_layout()
-plt.legend(fontsize = 8,loc = 'upper left')
+plt.legend(fontsize = 7,loc = 'upper left')
 plt.savefig('wall_pressure.png', dpi = 300)
 plt.show()
 plt.close()
@@ -517,11 +557,12 @@ for ind, cfdcode in enumerate(parameter_matrix.keys()):
 helpfunc.apply_axes_limits(run_nb, geom_nb)
 if run_nb == 'run14':
     plt.ylim(top = 1e6)
-if run_nb == 'run45':
-    plt.ylim(top = 6.5e6)
 if run_nb == 'run4':
     plt.ylim(top = 5e6)
     plt.ylim(bottom = -1e3)
+if run_nb == 'run45':
+    plt.ylim(top = 6.5e6)
+
 else:
     plt.ylim(top=ylim_up_dict[run_nb][key_select])
     plt.ylim(bottom=0)
@@ -543,9 +584,9 @@ plt.ylabel('Heat Flux (W / $m^2$)')
 
 plt.tight_layout()
 
-plt.legend(fontsize = 8,loc = 'upper left')
+plt.legend(fontsize = 7,loc = 'upper left')
 if zoom_flag:
-    plt.legend(fontsize = 8,loc = 'upper right')
+    plt.legend(fontsize = 7,loc = 'upper right')
 
 plt.savefig('wall_heatflux.png', dpi = 300)
 plt.show()

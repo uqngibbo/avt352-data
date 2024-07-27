@@ -17,8 +17,8 @@ import helper_functions as helpfunc
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run4'
-geom_nb = "geom1"
+run_nb = 'run37'
+geom_nb = "geom2"
 
 
 
@@ -36,16 +36,16 @@ parameter_matrix = {
 #                                             }
                             # },
     #for run4
-            'starccm':{ 'mesh':'mesh08',
-                    },
-            'eilmer':{ 'mesh':'mesh1',
-                        },
-            'ansys_aselsan':{ 'mesh':'meshXX',
-                        },
-            'SU2':{ 'mesh':'meshVeryFine',
-                        },
-            'overflow':{ 'mesh':'mesh2',
-                        },
+            # 'starccm':{ 'mesh':'mesh08',
+            #         },
+            # 'eilmer':{ 'mesh':'mesh1',
+            #             },
+            # 'ansys_aselsan':{ 'mesh':'meshXX',
+            #             },
+            # 'SU2':{ 'mesh':'meshXX',
+            #             },
+            # 'overflow':{ 'mesh':'mesh2',
+            #             },
     # for run6
         # 'eilmer':{ 'mesh':'mesh1',
         #             },
@@ -67,6 +67,8 @@ parameter_matrix = {
         #         },
         # 'ansys_inc':{ 'mesh':'meshXX',
         #             },
+        # 'SU2':{ 'mesh':'meshXX',
+        #                 }    
         # # run 28
         # 'gaspex':{ 'mesh':'mesh00',
         #         },
@@ -75,7 +77,9 @@ parameter_matrix = {
         # 'starccm':{ 'mesh':'mesh09',
         #             },
         # 'ansys_aselsan':{ 'mesh':'mesh03',
-        #             } 
+        #             },
+        # 'SU2':{ 'mesh':'meshXX',
+        #                 }
         # run 33
         # 'gaspex':{ 'mesh':'mesh00',
         #         },
@@ -85,6 +89,8 @@ parameter_matrix = {
         #             },
         # 'ansys_inc':{ 'mesh':'meshXX',
         #         },
+        # 'SU2':{ 'mesh':'meshXX',
+        #                 }
         # run 14
         # 'gaspex':{ 'mesh':'mesh00',
         #         },
@@ -96,17 +102,18 @@ parameter_matrix = {
         # 'ansys_inc':{ 'mesh':'meshXX',
 
         #             } ,
-        # 'SU2':{ 'mesh':'meshVeryFine',
+        # 'SU2':{ 'mesh':'meshXX',
         #             }  
 
         # run 41, 37, 34
-        # 'gaspex':{ 'mesh':'mesh00',
-        #         },
-        # 'eilmer':{ 'mesh':'mesh1',
-        #     },
-        # 'starccm':{ 'mesh':'mesh09',
-        #             },
-
+        'gaspex':{ 'mesh':'mesh00',
+                },
+        'eilmer':{ 'mesh':'mesh1',
+            },
+        'starccm':{ 'mesh':'mesh09',
+                    },
+        'SU2':{ 'mesh':'meshXX',
+                        }
     #-------------------------------------------------_#
     }
 
@@ -166,8 +173,10 @@ elif "37" in run_nb:
 elif "41" in run_nb:
     xbounds = [2.0,2.35]  
 elif "45" in run_nb:
-    xbounds = [1.0,2.35] 
+    xbounds = [2.0,2.35] 
 elif "4" in run_nb:
+    xbounds = [1.0,2.63] 
+elif "6" in run_nb:
     xbounds = [1.0,2.63] 
 
 
