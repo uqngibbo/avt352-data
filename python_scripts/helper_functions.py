@@ -27,11 +27,37 @@ length_dict = {'geom1': {'total':2852.2676 * mm_to_m,
             }
 
 
+# import re
+# # List of filenames
+# filenames = [
+#     "run4_wallHeatFlux_meshXX-SST.dat",
+#     "run4_wallP_meshXX-SST.dat",
+#     "RUN4_SU2_gridConv_coarse_pressure.dat",
+#     "RUN4_SU2_gridConv_medium_heatFlux.dat",
+#     "RUN4_SU2_schemeOrder_1st_heatFlux.dat"
+# ]
+
+# # Regex pattern
+# # Regex pattern
+# pattern = re.compile(r'^run\d+_[A-Za-z]+_mesh[A-Za-z0-9]+-[A-Za-z]+\.dat$', re.IGNORECASE)
+# # Filter filenames
+# matching_files = [filename for filename in filenames if pattern.match(filename)]
+
+
+
+def filter_files_with_keyword(file_list):
+    return [tmp for tmp in file_list if ('wallHeatFlux' in tmp) or ('wallP' in tmp)]
+
+
 def create_cfddatadict_for_solver(solvername, cfdfilenames):
 
     assert solvername in ['starccm', 'h3amr', 'ansys_inc','ansys_aselsan',
                             'eilmer', 'tau', 'cadence', 'gaspex', 'coda',
                             'SU2', 'tau2', 'overflow']
+
+    if solvername == 'SU2':
+        cfdfilenames = filter_files_with_keyword(cfdfilenames)
+        print(cfdfilenames)
 
     keys, turb_model_list = evaluate_dictionary_key_from_filename(cfdfilenames)
     if solvername == 'starccm':
@@ -57,6 +83,7 @@ def create_cfddatadict_for_solver(solvername, cfdfilenames):
                                     )
 
     if solvername == 'SU2':
+
         cfd_data_dict = load_data_files_ccm(cfdfilenames,
                                         keys,
                                         turb_model_list,
@@ -233,6 +260,7 @@ def load_data_files_ccm(tgt_files, dict_keys, turb_models, dtype = 'float', skip
                 result[key1][key2][key3] = read_cadence_file(filename)
 
             if solver == 'SU2':
+                print("Reading data for solver ", solver)
                 result[key1][key2][key3] = np.loadtxt(filename)
             elif solver != 'cadence':
                 result[key1][key2][key3] =  np.loadtxt(
@@ -646,6 +674,38 @@ def compute_peak_values_solvers(data_dict, tgt_var, start_xcoord = None,
     return tmp_dict
 
 
+def obtain_mapping_dict():
+    mapping_dict = {
+        'gaspex': 'GASPex',
+        'eilmer': 'Eilmer',
+        'cadence': 'Cadence Fidelity',
+        'ansys_aselsan': 'Ansys Fluent (Aselsan)',
+        'ansys_inc': 'Ansys Fluent (Ansys Inc)',
+        'tau': 'TAU',
+        'coda':'HyperCODA',
+        'starccm': 'STAR-CCM+',
+        'komega06': 'k-$\\omega$ 2006',
+        'komega': 'k-$\\omega$ 2006',
+        'SST': 'k-$\\omega$ SST',
+        'SSCEARSM_Prt086Lemmon': 'SSC-EARSM',
+        'SSTa10355': 'k-$\\omega$ SST',
+        'SSTa10355_Prt086Lemmon': 'k-$\\omega$ SST',
+        'SAnegN=646308QCR=off': 'SA-neg',
+        'Menter_SST': 'k-$\\omega$ SST',
+        'SSGLRRw': 'SSG/LRR-$\\omega$ 2010',
+        'GEKO': 'GEKO',
+        'SAneg': 'SA-neg',
+        'SBSLPrt086': 'SBSL EARSM',
+        'SST1T': 'k-$\\omega$ SST',
+        'SA1T':'SA',
+        'SST2T': 'k-$\\omega$ SST 2-T model',
+        'SA2T':'SA 2-T model',
+        'SSTa1coeff0355': 'k-$\\omega$ SST a1=0.355',
+        'SSTa1coeff031': 'k-$\\omega$ SST a1=0.31',
+        'SST2Ta1coeff031': 'k-$\\omega$ SST 2T a1=0.31',
+    }
+    
+    return mapping_dict
 
 def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
     table_caption = f"Integrated wall quantities for run {run_nb.replace('run','')}"
@@ -653,32 +713,7 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
 
     # Mapping of old names to new names
     if mapping_dict is None:
-        mapping_dict = {
-            'gaspex': 'GASPex',
-            'eilmer': 'Eilmer',
-            'cadence': 'Cadence Fidelity',
-            'ansys_aselsan': 'Ansys Fluent (Aselsan)',
-            'ansys_inc': 'Ansys Fluent (Ansys Inc)',
-            'tau': 'TAU',
-            'coda':'HyperCODA',
-            'starccm': 'STAR-CCM+',
-            'komega06': 'k-$\\omega$ 2006',
-            'komega': 'k-$\\omega$ 2006',
-            'SST': 'k-$\\omega$ SST',
-            'SSCEARSM_Prt086Lemmon': 'SSC-EARSM',
-            'SSTa10355': 'k-$\\omega$ SST',
-            'SSTa10355_Prt086Lemmon': 'k-$\\omega$ SST',
-            'SAnegN=646308QCR=off': 'SA-neg',
-            'Menter_SST': 'k-$\\omega$ SST',
-            'SSGLRRw': 'SSG/LRR-$\\omega$ 2010',
-            'GEKO': 'GEKO',
-            'SAneg': 'SA-neg',
-            'SBSLPrt086': 'SBSL EARSM',
-            'SST1T': 'k-$\\omega$ SST',
-            'SA1T':'SA',
-            'SST2T': 'k-$\\omega$ SST 2-T model',
-            'SA2T':'SA 2-T model',
-        }
+        mapping_dict = obtain_mapping_dict()
 
     # Function to get the new name from the mapping
     def get_new_name(old_name):
@@ -724,32 +759,7 @@ def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
 
     # Mapping of old names to new names
     if mapping_dict is None:
-        mapping_dict = {
-            'gaspex': 'GASPex',
-            'eilmer': 'Eilmer',
-            'cadence': 'Cadence Fidelity',
-            'ansys_aselsan': 'Ansys Fluent (Aselsan)',
-            'ansys_inc': 'Ansys Fluent (Ansys Inc)',
-            'tau': 'TAU',
-            'coda':'HyperCODA',
-            'starccm': 'STAR-CCM+',
-            'komega06': 'k-$\\omega$ 2006',
-            'komega': 'k-$\\omega$ 2006',
-            'SST': 'k-$\\omega$ SST',
-            'SSCEARSM_Prt086Lemmon': 'SSC-EARSM',
-            'SSTa10355': 'k-$\\omega$ SST',
-            'SSTa10355_Prt086Lemmon': 'k-$\\omega$ SST',
-            'SAnegN=646308QCR=off': 'SA-neg',
-            'Menter_SST': 'k-$\\omega$ SST',
-            'SSGLRRw': 'SSG/LRR-$\\omega$ 2010',
-            'GEKO': 'GEKO',
-            'SAneg': 'SA-neg',
-            'SBSLPrt086': 'SBSL EARSM',
-            'SST1T': 'k-$\\omega$ SST',
-            'SA1T':'SA',
-            'SST2T': 'k-$\\omega$ SST 2-T model',
-            'SA2T':'SA 2-T model',
-        }
+        mapping_dict = obtain_mapping_dict()
 
     # Function to get the new name from the mapping
     def get_new_name(old_name):
