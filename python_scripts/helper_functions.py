@@ -128,14 +128,16 @@ def create_cfddatadict_for_solver(solvername, cfdfilenames):
     return cfd_data_dict
 
 
+
+
 def read_cadence_file(filename):
     tmp_data = np.unique(np.genfromtxt(filename,
                                         delimiter=' ',
                                         skip_header=1),
                         axis = 0)
-    
     tmp_data = np.array([(val1, val2) for val1, val2
                                         in zip(tmp_data[:,2], tmp_data[:,3])])
+    tmp_data = np.unique(tmp_data, axis = 0) # somehow need to do again in case
     return tmp_data
 
 
@@ -263,12 +265,12 @@ def load_data_files_ccm(tgt_files, dict_keys, turb_models, dtype = 'float', skip
                 print("Reading data for solver ", solver)
                 result[key1][key2][key3] = np.loadtxt(filename)
             elif solver != 'cadence':
-                result[key1][key2][key3] =  np.loadtxt(
+                result[key1][key2][key3] =  np.unique(np.loadtxt(
                                             filename,
                                             skiprows=skiprows,
                                             delimiter = delim,
                                             dtype = dtype
-                                        ) * multiplier
+                                        ), axis = 0) * multiplier
 
 
             if verbosity > 1:
