@@ -848,9 +848,9 @@ def create_latex_table_variations(nested_dict, run_nb):
     latex_table += f"{round(nested_dict['separation_loc']['variation']*100,2)}"
     # & {nested_dict['peak_p']['variation']} & {nested_dict['peak_p_loc']['variation']} & {nested_dict['peak_q']['variation']} &  {nested_dict['peak_q_loc']['variation']} \\\\\n"
     latex_table += f"& {round(nested_dict['peak_p_loc']['variation']*100,2)}"
-    latex_table += f"& {nested_dict['peak_p']['variation']}"
+    latex_table += f"& {round(nested_dict['peak_p']['variation'],2)}"
     latex_table += f"& {round(nested_dict['peak_q_loc']['variation']*100,2)}"
-    latex_table += f"& {nested_dict['peak_q']['variation']}\\\\\n"
+    latex_table += f"& {round(nested_dict['peak_q']['variation'],3)}\\\\\n"
 
     latex_table += "\\hline\n"
 
