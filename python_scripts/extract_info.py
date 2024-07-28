@@ -194,8 +194,10 @@ print(aa)
 
 
 
-aa = helpfunc.obtain_variations(sep_peak_dict)
+variations = helpfunc.obtain_variations(sep_peak_dict)
 
+bb = helpfunc.create_latex_table_variations(variations, run_nb)
+print(bb)
 #-- go back to orginal directory---#
 os.chdir(work_dir)
 

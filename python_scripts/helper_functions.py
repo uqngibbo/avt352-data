@@ -822,6 +822,46 @@ def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
     return latex_table
 
 
+def create_latex_table_variations(nested_dict, run_nb):
+    table_caption = f"Absolute variations in predictions of separation, peak values and associated location for run {run_nb.replace('run','')}"
+    table_label = f"res_comparison_variation_{run_nb}"
+
+
+    # Start creating the LaTeX table
+    latex_table = """
+    \\begin{table}[ht]
+    \\center
+    \\begin{tabular}{p{1.8cm}p{1.8cm}p{1.8cm}p{1.8cm}p{1.8cm}}
+    \\hline
+    \\ $\Delta$ Separation onset (cm) & $\Delta$ Peak pressure location (cm) & $\Delta$ Peak pressure (kPa) & $\Delta$ Peak heat flux location (cm) & $\Delta$ Peak heat flux (MW/m$^2$) \\\\
+    \\hline
+    \\hline
+    """
+
+    # Iterate through the nested dictionary to fill in the table
+
+    # for subkey in nested_dict.keys():
+    #     # if first_entry:
+    #     #     latex_table += f"{new_main_key} & {new_sub_key} & {values['separation_loc']} & {values['peak_p']} & {values['peak_p_loc']} & {values['peak_q']} & {values['peak_q_loc']}\\\\\n"
+    #     #     first_entry = False
+    #     # else:
+    latex_table += f"{round(nested_dict['separation_loc']['variation']*100,2)}"
+    # & {nested_dict['peak_p']['variation']} & {nested_dict['peak_p_loc']['variation']} & {nested_dict['peak_q']['variation']} &  {nested_dict['peak_q_loc']['variation']} \\\\\n"
+    latex_table += f"& {round(nested_dict['peak_p_loc']['variation']*100,2)}"
+    latex_table += f"& {nested_dict['peak_p']['variation']}"
+    latex_table += f"& {round(nested_dict['peak_q_loc']['variation']*100,2)}"
+    latex_table += f"& {nested_dict['peak_q']['variation']}\\\\\n"
+
+    latex_table += "\\hline\n"
+
+    # End the table
+    latex_table += f"""
+    \\end{{tabular}}
+    \\caption{{{table_caption}}}
+    \\label{{tab:{table_label}}}
+    \\end{{table}}
+    """
+    return latex_table
 
 
 def join_separation_dicts(sep_dict, pres_dict, heat_dict):
