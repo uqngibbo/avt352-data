@@ -293,6 +293,28 @@ def load_data_files_ccm(tgt_files, dict_keys, turb_models, dtype = 'float', skip
 
 
 
+def obtain_variations(data_dict, keys_of_interest = ['separation_loc','peak_p', 'peak_p_loc',
+                                        'peak_q', 'peak_q_loc'], turb_model_list = None):
+    variations_dict = {}
+
+    for key in keys_of_interest:
+        if turb_model_list is None:
+            tmp = np.array([turb_data[key] for solver_data in data_dict.values()
+                        for turb_data in solver_data.values()])
+        else:
+            tmp = np.array([turb_data[key] for solver_data in data_dict.values()
+                        for turb_mod, turb_data in solver_data.items() 
+                                if turb_mod in turb_model_list])
+
+        variations_dict[key] = dict([('min', np.min(tmp)),
+                                    ('max', np.max(tmp)),
+                                    ('variation', np.max(tmp) - np.min(tmp)),
+                                    ('nb_results', len(tmp))                                
+                                ])
+    return variations_dict
+
+
+
 def evaluate_dictionary_key_from_filename(tgt_files):
     dict_keys = [filename.split('.')[0] 
                         if not "/" in filename
@@ -798,6 +820,9 @@ def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
     \\end{{table}}
     """
     return latex_table
+
+
+
 
 def join_separation_dicts(sep_dict, pres_dict, heat_dict):
     tmp_dict = {}

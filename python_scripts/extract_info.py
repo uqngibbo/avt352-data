@@ -192,6 +192,10 @@ sep_peak_dict = helpfunc.join_separation_dicts(sep_dict, res_peak_p, res_peak_q)
 aa = helpfunc.create_latex_table_separation(sep_peak_dict, run_nb)
 print(aa)
 
+
+
+aa = helpfunc.obtain_variations(sep_peak_dict)
+
 #-- go back to orginal directory---#
 os.chdir(work_dir)
 
