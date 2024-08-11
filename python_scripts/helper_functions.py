@@ -53,7 +53,7 @@ def create_cfddatadict_for_solver(solvername, cfdfilenames):
 
     assert solvername in ['starccm', 'h3amr', 'ansys_inc','ansys_aselsan',
                             'eilmer', 'tau', 'cadence', 'gaspex', 'coda',
-                            'SU2', 'tau2', 'overflow']
+                            'SU2', 'tau2', 'overflow', 'vulcan']
 
     if solvername == 'SU2':
         cfdfilenames = filter_files_with_keyword(cfdfilenames)
@@ -122,6 +122,14 @@ def create_cfddatadict_for_solver(solvername, cfdfilenames):
                                         solver = 'cadence'
                                     )
 
+
+    if solvername == 'vulcan':
+        cfd_data_dict = load_data_files_ccm(cfdfilenames,
+                                        keys,
+                                        turb_model_list,
+                                        dtype = 'float',
+                                        solver = 'vulcan'
+                                    )
 
 
 
@@ -226,6 +234,7 @@ def load_data_files_ccm(tgt_files, dict_keys, turb_models, dtype = 'float', skip
     if solver == 'ansys_aselsan':
         multiplier = [1e-3, 1]
 
+
     # if solver == 'su2':
     #     skiprows = 0
     #     delim = " "
@@ -249,6 +258,11 @@ def load_data_files_ccm(tgt_files, dict_keys, turb_models, dtype = 'float', skip
             if 'wallHeatFlux' in filename:
                 multiplier = [INCH_TO_M, BTU_FT2_SEC_TO_W_M2]
 
+        if solver =='vulcan':
+            if 'wallP' in filename:
+                multiplier = [1, 1e3]
+            if 'wallHeatFlux' in filename:
+                multiplier = [1, 1e6]
 
         try:
             try:
@@ -372,6 +386,9 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
                                 naming_dict={}, user_color = None,
                                 scale_fac = 1):
     linestyles_list = ['-','--','dashdot', 'dotted']
+    color_backup_list = ['darkkhaki', 'bisque', 'lightsteelblue']
+
+
     mesh_label = tgt_mesh 
     try:
         mesh_label = naming_dict['mesh'][tgt_mesh]
@@ -380,6 +397,7 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
     prng = np.random.RandomState(1234567890)
     
     linestyle_counter = 0
+    color_counter = 0
     for turb_model in data_dict[tgt_mesh].keys():
 
         turb_label = turb_model
@@ -394,6 +412,10 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
         color = prng.rand(3,)
         if user_color is not None:
             color = user_color
+            if (linestyle_counter > 0) & (np.mod(linestyle_counter,2) == 0):
+                color_counter +=1
+                color = color_backup_list[color_counter-1]
+                linestyle_counter = 0
         # probably a better way to do this but will do for now 
         if tgt_turb_list is None:
             plt.plot(data_dict[tgt_mesh][turb_model][:-2,0],
