@@ -647,7 +647,7 @@ def find_peak_value(data_dict, tgt_mesh = None, key_select = None, start_xcoord 
 
     if tgt_mesh is not None:
         mesh_list = list(tgt_mesh)
-
+    print('mesh list', mesh_list)
     xres_list = np.zeros(len(mesh_list))
     pres_list = np.zeros(len(mesh_list))
 
@@ -730,6 +730,8 @@ def obtain_mapping_dict():
         'ansys_inc': 'Ansys Fluent (Ansys Inc)',
         'tau': 'TAU',
         'coda':'HyperCODA',
+        'overflow': 'OVERFLOW',
+        'vulcan': 'VULCAN',
         'starccm': 'STAR-CCM+',
         'komega06': 'k-$\\omega$ 2006',
         'komega': 'k-$\\omega$ 2006',
@@ -750,8 +752,12 @@ def obtain_mapping_dict():
         'SSTa1coeff0355': 'k-$\\omega$ SST a1=0.355',
         'SSTa1coeff031': 'k-$\\omega$ SST a1=0.31',
         'SST2Ta1coeff031': 'k-$\\omega$ SST 2T a1=0.31',
+        'SSTV': 'k-$\\omega$ SST-V',
+        'SSTVnorhok': 'k-$\\omega$ SST-V no 2/3 rho*k',
+        'SSTKL': 'k-$\\omega$ SST-KL',
+        'SAQCRV': 'SA 2013 QCR-V'
     }
-    
+
     return mapping_dict
 
 def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
@@ -800,6 +806,7 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
     return latex_table
 
 
+
 def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
     table_caption = f"Separation, peak values and associated location for run {run_nb.replace('run','')}"
     table_label = f"res_comparison_separation_{run_nb}"
@@ -811,11 +818,12 @@ def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
     # Function to get the new name from the mapping
     def get_new_name(old_name):
         return mapping_dict.get(old_name, old_name)
-        
+
+ 
     # Start creating the LaTeX table
     latex_table = """
     \\begin{table}[ht]
-    \\begin{tabular}{p{1.5cm}p{2.6cm}p{1.1cm}p{1.3cm}p{1.4cm}p{1.8cm}p{1.4cm}}
+    \\begin{tabular}{p{1.8cm}p{2.6cm}p{1.1cm}p{1.3cm}p{1.4cm}p{1.8cm}p{1.4cm}}
     \\hline
     \\textbf{Solver} & \\textbf{Turbulence Model} & \\textbf{x$_{sep}$ (m)} &  \\textbf{p$_{peak}$ (kPa)} & \\textbf{p$_{peak,loc}$ (m)} &  \\textbf{q$_{peak}$ (MW/($m^2$))} &  \\textbf{q$_{peak,loc}$ (m)} \\\\
     \\hline
