@@ -17,7 +17,7 @@ import helper_functions as helpfunc
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run37'
+run_nb = 'run45'
 geom_nb = "geom2"
 
 
@@ -46,6 +46,10 @@ parameter_matrix = {
             #             },
             # 'overflow':{ 'mesh':'mesh2',
             #             },
+            # 'vulcan': { 'mesh':'meshXX',
+            #             'turb_model_list': ['SST', 'SSTV', 'SAQCRV',
+            #                                     'SA', 'SSTVnorhok', 'SSTKL']
+            #             },
     # for run6
         # 'eilmer':{ 'mesh':'mesh1',
         #             },
@@ -53,22 +57,26 @@ parameter_matrix = {
         #             },
 
         # for run 45
-        # 'starccm':{ 'mesh':'mesh09',
-        #             },
-        # 'eilmer':{ 'mesh':'mesh1',
-        #             },
-        # 'ansys_aselsan':{ 'mesh':'mesh2',
-        #             },
-        # 'cadence':{ 'mesh':'meshXX',
-        #             },
-        # 'tau':{ 'mesh':'meshXX',
-        #     },
-        # 'coda':{ 'mesh':'meshXX',
-        #         },
-        # 'ansys_inc':{ 'mesh':'meshXX',
-        #             },
-        # 'SU2':{ 'mesh':'meshXX',
-        #                 }    
+        'starccm':{ 'mesh':'mesh09',
+                    },
+        'eilmer':{ 'mesh':'mesh1',
+                    },
+        'ansys_aselsan':{ 'mesh':'mesh2',
+                    },
+        'cadence':{ 'mesh':'meshXX',
+                    },
+        'tau':{ 'mesh':'meshXX',
+            },
+        'coda':{ 'mesh':'meshXX',
+                },
+        'ansys_inc':{ 'mesh':'meshXX',
+                    },
+        'SU2':{ 'mesh':'meshXX',
+                        },
+        'vulcan':{ 'mesh':'meshXX',
+                        },
+        'overflow':{ 'mesh':'mesh2',
+                        },     
         # # run 28
         # 'gaspex':{ 'mesh':'mesh00',
         #         },
@@ -106,14 +114,14 @@ parameter_matrix = {
         #             }  
 
         # run 41, 37, 34
-        'gaspex':{ 'mesh':'mesh00',
-                },
-        'eilmer':{ 'mesh':'mesh1',
-            },
-        'starccm':{ 'mesh':'mesh09',
-                    },
-        'SU2':{ 'mesh':'meshXX',
-                        }
+        # 'gaspex':{ 'mesh':'mesh00',
+        #         },
+        # 'eilmer':{ 'mesh':'mesh1',
+        #     },
+        # 'starccm':{ 'mesh':'mesh09',
+        #             },
+        # 'SU2':{ 'mesh':'meshXX',
+        #                 }
     #-------------------------------------------------_#
     }
 
@@ -181,7 +189,7 @@ elif "6" in run_nb:
 
 
 sep_dict = helpfunc.compute_separation_onsets_solvers(reduced_dict, xbounds)
-res_peak_p = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallP')
+res_peak_p = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallP', start_xcoord= 1)
 res_peak_q = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallHeatFlux',
                                                                 start_xcoord= 1,
                                                                 end_xcoord = None)
