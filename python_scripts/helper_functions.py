@@ -408,14 +408,15 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
 
         labelname = " ".join((mesh_label, turb_label))
 
-        
         color = prng.rand(3,)
         if user_color is not None:
             color = user_color
-            if (linestyle_counter > 0) & (np.mod(linestyle_counter,2) == 0):
+            if (linestyle_counter > 0) & (np.mod(linestyle_counter,3) == 0):
                 color_counter +=1
                 color = color_backup_list[color_counter-1]
                 linestyle_counter = 0
+            if color_counter > 0:
+                color = color_backup_list[color_counter-1]
         # probably a better way to do this but will do for now 
         if tgt_turb_list is None:
             plt.plot(data_dict[tgt_mesh][turb_model][:-2,0],
