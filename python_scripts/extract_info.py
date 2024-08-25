@@ -17,7 +17,7 @@ import helper_functions as helpfunc
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run45'
+run_nb = 'run37'
 geom_nb = "geom2"
 
 
@@ -57,26 +57,26 @@ parameter_matrix = {
         #             },
 
         # for run 45
-        'starccm':{ 'mesh':'mesh09',
-                    },
-        'eilmer':{ 'mesh':'mesh1',
-                    },
-        'ansys_aselsan':{ 'mesh':'mesh2',
-                    },
-        'cadence':{ 'mesh':'meshXX',
-                    },
-        'tau':{ 'mesh':'meshXX',
-            },
-        'coda':{ 'mesh':'meshXX',
-                },
-        'ansys_inc':{ 'mesh':'meshXX',
-                    },
-        'SU2':{ 'mesh':'meshXX',
-                        },
-        'vulcan':{ 'mesh':'meshXX',
-                        },
-        'overflow':{ 'mesh':'mesh2',
-                        },     
+        # 'starccm':{ 'mesh':'mesh09',
+        #             },
+        # 'eilmer':{ 'mesh':'mesh1',
+        #             },
+        # 'ansys_aselsan':{ 'mesh':'mesh2',
+        #             },
+        # 'cadence':{ 'mesh':'meshXX',
+        #             },
+        # 'tau':{ 'mesh':'meshXX',
+        #     },
+        # 'coda':{ 'mesh':'meshXX',
+        #         },
+        # 'ansys_inc':{ 'mesh':'meshXX',
+        #             },
+        # 'SU2':{ 'mesh':'meshXX',
+        #                 },
+        # 'vulcan':{ 'mesh':'meshXX',
+        #                 },
+        # 'overflow':{ 'mesh':'mesh2',
+        #                 },     
         # # run 28
         # 'gaspex':{ 'mesh':'mesh00',
         #         },
@@ -114,14 +114,14 @@ parameter_matrix = {
         #             }  
 
         # run 41, 37, 34
-        # 'gaspex':{ 'mesh':'mesh00',
-        #         },
-        # 'eilmer':{ 'mesh':'mesh1',
-        #     },
-        # 'starccm':{ 'mesh':'mesh09',
-        #             },
-        # 'SU2':{ 'mesh':'meshXX',
-        #                 }
+        'gaspex':{ 'mesh':'mesh00',
+                },
+        'eilmer':{ 'mesh':'mesh1',
+            },
+        'starccm':{ 'mesh':'mesh09',
+                    },
+        'SU2':{ 'mesh':'meshXX',
+                        }
     #-------------------------------------------------_#
     }
 
@@ -156,11 +156,19 @@ reduced_dict = helpfunc.filter_global_dict_based_on_parameters(global_data_dict,
                                                         parameter_matrix,
                                                         geom_nb)
 
+integrated_xdata_bounds = {'geom1':(2.45, 2.85),
+                            'geom2': (2.24,2.49)
+                            }
 
-integrated_dict = helpfunc.compute_integral_quantities(reduced_dict)
+
+integrated_dict = helpfunc.compute_integral_quantities(reduced_dict,
+                                *integrated_xdata_bounds[geom_nb],
+                                scale_by_integral_x = True
+                                )
 
 # Get latex table, NOTE: print it and copy in latex
-latex_table = helpfunc.create_latex_table_integrated(integrated_dict, run_nb)
+latex_table = helpfunc.create_latex_table_integrated(integrated_dict, run_nb,
+                resizebox = True)
 print(latex_table)
 
 
@@ -169,7 +177,7 @@ print(latex_table)
 # Specify the bounds too look for largest grad of pressure. Run dependent
 # NOTE: We might have to Taylor bounds for different solvers, TBD
 if "14" in run_nb:
-    xbounds = [1.0,2.33]  # for run 14
+    xbounds = [2.1,2.355]  # for run 14
 elif "28" in run_nb:
     xbounds = [1.0,2.37]  # for run 28
 elif "33" in run_nb:
@@ -194,7 +202,7 @@ res_peak_q = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallHeatFlux',
                                                                 start_xcoord= 1,
                                                                 end_xcoord = None)
 
-
+xdata_bounds_dict = helpfunc.compute_data_bounds(reduced_dict)
 
 sep_peak_dict = helpfunc.join_separation_dicts(sep_dict, res_peak_p, res_peak_q)
 aa = helpfunc.create_latex_table_separation(sep_peak_dict, run_nb)
