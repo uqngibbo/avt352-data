@@ -40,6 +40,11 @@ exp_sep_onset_dict = {
                 }
 
 
+def get_experimental_separation():
+    return exp_sep_onset_dict
+
+def get_geometry_information():
+    return length_dict
 # import re
 # # List of filenames
 # filenames = [
