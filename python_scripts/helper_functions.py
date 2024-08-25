@@ -27,6 +27,10 @@ length_dict = {'geom1': {'total':2852.2676 * mm_to_m,
             }
 
 
+exp_sep_onset_dict = {'run4': 2.5743,
+                        # 'run6':
+        
+}
 # import re
 # # List of filenames
 # filenames = [
@@ -663,6 +667,12 @@ def filter_global_dict_based_on_parameters(cfd_dict,
     return res_dict
 
 
+def find_nearest(array, value): # from stackoverflow, 
+                                # https://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return idx #array[idx]
+    
 def find_peak_value(data_dict, tgt_mesh = None, key_select = None, start_xcoord = None,
                     end_xcoord = None):
     start_xind = 0
@@ -675,11 +685,6 @@ def find_peak_value(data_dict, tgt_mesh = None, key_select = None, start_xcoord 
     xres_list = np.zeros(len(mesh_list))
     pres_list = np.zeros(len(mesh_list))
 
-    def find_nearest(array, value): # from stackoverflow, 
-                                    # https://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array
-        array = np.asarray(array)
-        idx = (np.abs(array - value)).argmin()
-        return idx #array[idx]
 
     for ind, mesh_key in enumerate(mesh_list):
 
@@ -699,22 +704,50 @@ def find_peak_value(data_dict, tgt_mesh = None, key_select = None, start_xcoord 
     return xres_list, pres_list,  mesh_list
 
 
-def compute_integral_quantities(cfd_dict, keys_list = ['wallP', 'wallHeatFlux']):
+def compute_integral_quantities(cfd_dict, start_xcoord = None,
+                                end_xcoord = None,
+                                keys_list = ['wallP', 'wallHeatFlux'],
+                                scale_by_integral_x = False):
     scaling_dict = {'wallP':1e-3, 'wallHeatFlux': 1e-6}
     round_dict = {'wallP':2, 'wallHeatFlux': 3}
     res_dict = {}
+
+    if start_xcoord is not None:
+        print('Setting user defined min xbound ', start_xcoord)
+    if end_xcoord is not None:
+        print('Setting user defined max xbound ', end_xcoord)
+        
     for cfdcode in cfd_dict.keys():
         res_dict[cfdcode] = {}
         for variable in keys_list:
             for _, (turb_mod, vals) in enumerate(cfd_dict[cfdcode][variable].items()):
                 if (variable == keys_list[0]):
                     res_dict[cfdcode][turb_mod] = {}
-                int_val = int(np.trapz(vals[:,1],
-                                            vals[:,0]
+
+                start_xind = 0
+                end_xind = -1
+                if start_xcoord is not None:
+                    start_xind = find_nearest(vals[:,0], start_xcoord)
+
+                if end_xcoord is not None:
+                    end_xind = find_nearest(vals[:,0], end_xcoord)
+
+                int_val = int(np.trapz(vals[start_xind:end_xind,1],
+                                            vals[start_xind:end_xind,0]
                                             )
                                         ) * scaling_dict[variable]
+                
+                if scale_by_integral_x:
+                    int_val /= np.trapz(np.ones(len(vals[start_xind:end_xind,0])),
+                                            vals[start_xind:end_xind,0]
+                                            )
+                    print("integrated length for scaling = ",
+                            np.trapz(np.ones(len(vals[start_xind:end_xind,0])),
+                                            vals[start_xind:end_xind,0]
+                                            ))
                 int_val = round(int_val,round_dict[variable])
                 # print(variable)
+
                 res_dict[cfdcode][turb_mod]['integrated_'+variable] = int_val
     return res_dict
 
@@ -817,8 +850,10 @@ def obtain_mapping_dict():
 
     return mapping_dict
 
-def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
-    table_caption = f"Integrated wall quantities for run {run_nb.replace('run','')}"
+def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None,
+            resizebox = False):
+    table_caption = f"Integrated wall quantities for run {run_nb.replace('run','')} ."
+    table_caption += " Values are scaled by $\int$dx."
     table_label = f"res_comparison_integrated_{run_nb}"
 
     # Mapping of old names to new names
@@ -860,6 +895,9 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None):
     \\label{{tab:{table_label}}}
     \\end{{table}}
     """
+    if resizebox:
+        latex_table = latex_table.replace("\\centering", "\\resizebox{\columnwidth}{!}{%")
+        latex_table = latex_table.replace("\\end{tabular}", "\\end{tabular} \n\t}")
     return latex_table
 
 
