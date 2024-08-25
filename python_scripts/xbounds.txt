@@ -1,0 +1,157 @@
+run45
+{'starccm': {'xmin': {'SST': 7e-05}, 'xmax': {'SST': 2.50415}},
+ 'eilmer': {'xmin': {'komega': 0.00052}, 'xmax': {'komega': 2.50387}},
+ 'ansys_aselsan': {'xmin': {'SST': 0.0025}, 'xmax': {'SST': 2.5041}},
+ 'cadence': {'xmin': {'SSTa10355': 0.00124, 'SSCEARSM_Prt086Lemmon': 0.00124},
+  'xmax': {'SSTa10355': 2.50419, 'SSCEARSM_Prt086Lemmon': 2.50419}},
+ 'tau': {'xmin': {'Menter_SST': 0.0005,
+   'SAnegN=646308QCR=off': 0.0005,
+   'SSGLRRw': 0.0005},
+  'xmax': {'Menter_SST': 2.50406,
+   'SAnegN=646308QCR=off': 2.50406,
+   'SSGLRRw': 2.50406}},
+ 'coda': {'xmin': {'SAneg': 0.0}, 'xmax': {'SAneg': 2.50387}},
+ 'ansys_inc': {'xmin': {'GEKO': 0.00248}, 'xmax': {'GEKO': 2.50381}},
+ 'SU2': {'xmin': {'SST': 0.22911}, 'xmax': {'SST': 2.50419}},
+ 'vulcan': {'xmin': {'SSTV': 0.00119,
+   'SST': 0.00119,
+   'SSTKL': 0.00119,
+   'SA': 0.00119,
+   'SAQCRV': 0.00119,
+   'SSTVnorhok': 0.00119},
+  'xmax': {'SSTV': 2.50393,
+   'SST': 2.50393,
+   'SSTKL': 2.50393,
+   'SA': 2.50393,
+   'SAQCRV': 2.50393,
+   'SSTVnorhok': 2.50393}},
+ 'overflow': {'xmin': {'SA': 0.0, 'SST': 0.0},
+  'xmax': {'SA': 2.50419, 'SST': 2.50419}}}
+ 'largest_min': 0.22911,
+ 'smallest_max': 2.50381}
+}
+
+
+run 28
+{'gaspex': {'xmin': {'komega06': 2.26101}, 'xmax': {'komega06': 2.48511}},
+ 'eilmer': {'xmin': {'komega': 0.0004}, 'xmax': {'komega': 2.50387}},
+ 'starccm': {'xmin': {'SST': 7e-05}, 'xmax': {'SST': 2.50415}},
+ 'ansys_aselsan': {'xmin': {'SSTa1coeff0355': 0.00101,
+   'SSTa1coeff031': 0.00101,
+   'SST2Ta1coeff031': 0.00101},
+  'xmax': {'SSTa1coeff0355': 2.50417,
+   'SSTa1coeff031': 2.50417,
+   'SST2Ta1coeff031': 2.50417}},
+ 'SU2': {'xmin': {'SST': 0.22911}, 'xmax': {'SST': 2.50419}}}
+ 'largest_min': 2.26101,
+ 'smallest_max': 2.48511}
+}
+bounds ok for separation
+
+
+run 33
+{'gaspex': {'xmin': {'komega06': 2.24818}, 'xmax': {'komega06': 2.48468}},
+ 'eilmer': {'xmin': {'komega': 0.0004}, 'xmax': {'komega': 2.50387}},
+ 'starccm': {'xmin': {'SST': 7e-05}, 'xmax': {'SST': 2.50415}},
+ 'ansys_inc': {'xmin': {'GEKO': 0.00248}, 'xmax': {'GEKO': 2.50381}},
+ 'SU2': {'xmin': {'SST': 0.22911}, 'xmax': {'SST': 2.50419}},
+ 'largest_min': 2.24818,
+ 'smallest_max': 2.48468}
+ }
+bounds not ok for separation -> Eilmer just prior to bounds 2.242  but from 2.24 is fine as well
+
+
+ run 14
+ {'gaspex': {'xmin': {'komega06': 2.26111}, 'xmax': {'komega06': 2.48771}},
+ 'eilmer': {'xmin': {'komega': 0.0004}, 'xmax': {'komega': 2.50387}},
+ 'starccm': {'xmin': {'SST': 7e-05}, 'xmax': {'SST': 2.50415}},
+ 'ansys_inc': {'xmin': {'GEKO': 0.00248}, 'xmax': {'GEKO': 2.50381}},
+ 'SU2': {'xmin': {'SST': 0.22911}, 'xmax': {'SST': 2.50419}},
+ 'largest_min': 2.26111,
+ 'smallest_max': 2.48771}
+}
+bounds ok for separation
+
+
+run41
+{'gaspex': {'xmin': {'komega06': 2.26082}, 'xmax': {'komega06': 2.48754}},
+ 'eilmer': {'xmin': {'komega': 0.00052}, 'xmax': {'komega': 2.50387}},
+ 'starccm': {'xmin': {'SST': 7e-05}, 'xmax': {'SST': 2.50415}},
+ 'SU2': {'xmin': {'SST': 0.22911}, 'xmax': {'SST': 2.50419}},
+ 'largest_min': 2.26082,
+ 'smallest_max': 2.48754}
+}
+bounds ok for separation but not compared to others ~ 2 cm less
+
+
+run 34
+{'gaspex': {'xmin': {'komega06': 2.26087}, 'xmax': {'komega06': 2.48527}},
+ 'eilmer': {'xmin': {'komega': 0.00052}, 'xmax': {'komega': 2.50387}},
+ 'starccm': {'xmin': {'SST': 7e-05}, 'xmax': {'SST': 2.50415}},
+ 'SU2': {'xmin': {'SST': 0.22911}, 'xmax': {'SST': 2.50419}},
+ 'largest_min': 2.26087,
+ 'smallest_max': 2.48527}
+}
+bounds ok for separations
+
+run 37
+{'gaspex': {'xmin': {'komega06': 2.26081}, 'xmax': {'komega06': 2.48842}},
+ 'eilmer': {'xmin': {'komega': 0.00052}, 'xmax': {'komega': 2.50387}},
+ 'starccm': {'xmin': {'SST': 0.00013}, 'xmax': {'SST': 2.50411}},
+ 'SU2': {'xmin': {'SST': 0.22911}, 'xmax': {'SST': 2.50419}},
+ 'largest_min': 2.26081,
+ 'smallest_max': 2.48842}
+}
+bounds ok for separation but not compared to others ~ 2 cm less
+
+
+# take 2.24 - 2.49 as distance to intergrate
+2.24 ~ 5 % of cone axial distance, do smth similar for other
+
+
+
+
+# Run 6
+{'eilmer': {'xmin': {'komega': 0.00016}, 'xmax': {'komega': 2.85198}},
+ 'ansys_aselsan': {'xmin': {'SST': 0.0001}, 'xmax': {'SST': 2.85226}},
+ 'largest_min': 0.00016,
+ 'smallest_max': 2.85198}
+}
+2.45 could be ok, end has to be 2.85
+
+
+RUn 4
+{'starccm': {'xmin': {'SST': 0.00014}, 'xmax': {'SST': 2.85219}},
+ 'eilmer': {'xmin': {'komega': 0.00016}, 'xmax': {'komega': 2.85198}},
+ 'ansys_aselsan': {'xmin': {'SA1T': 0.0001,
+   'SA2T': 0.0001,
+   'SST1T': 0.0001,
+   'SST2T': 0.0001},
+  'xmax': {'SA1T': 2.85226,
+   'SA2T': 2.85226,
+   'SST1T': 2.85226,
+   'SST2T': 2.85226}},
+ 'SU2': {'xmin': {'SST': 0.19782}, 'xmax': {'SST': 2.85227}},
+ 'overflow': {'xmin': {'SA': 0.0, 'SST': 0.0},
+  'xmax': {'SA': 2.85227, 'SST': 2.85227}},
+ 'vulcan': {'xmin': {'SSTVnorhok': 0.00121,
+   'SSTKL': 0.00121,
+   'SAQCRV': 0.00121,
+   'SSTV': 0.00121,
+   'SST': 0.00121,
+   'SA': 0.00121},
+  'xmax': {'SSTVnorhok': 2.85202,
+   'SSTKL': 2.85202,
+   'SAQCRV': 2.85202,
+   'SSTV': 2.85202,
+   'SST': 2.85202,
+   'SA': 2.85202}},
+ 'largest_min': 0.19782,
+ 'smallest_max': 2.85198}
+
+2.45 could be ok, end has to be 2.85
+
+
+
+# take 2.45 - 2.85 as distance to intergrate
+2.45 ~ 7 % of cone axial distance

@@ -382,11 +382,30 @@ def read_ccm_file(filename):
 
 
 
+
 def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
                                 naming_dict={}, user_color = None,
-                                scale_fac = 1):
+                                scale_fac = 1,
+                                scale_fac_dict = {'wallP':1, 'wallHeatFlux':1}
+                            ):
     linestyles_list = ['-','--','dashdot', 'dotted']
     color_backup_list = ['darkkhaki', 'bisque', 'lightsteelblue']
+    # color_list = [
+    #     np.array([1, 0, 0]),
+    #     np.array([0, 0, 1]),
+    #     np.array([0, 1, 0]),
+    #     np.array([0.8916548 , 0.45756748, 0.77818808]),
+    #     np.array([0.26706377, 0.99610621, 0.54009489]),
+    #     np.array([0.53752161, 0.40099938, 0.70540579]),
+    #     np.array([0.40518559, 0.94999075, 0.03075388]),
+    #     np.array([0.13602495, 0.08297726, 0.42352224]),
+    #     np.array([0.23449723, 0.74743526, 0.65177865]),
+    #     np.array([0.68998682, 0.16413419, 0.87642114]),
+    #     np.array([0.44733314, 0.57871104, 0.52377835]),
+    #     np.array([0.62689056, 0.34869427, 0.26209748]),
+    #     np.array([0.07498055, 0.1794057 , 0.82999425])]
+    color_list = ['red', 'blue','green', 'black', 'yellow', 'brown', 'cyan']
+
 
 
     mesh_label = tgt_mesh 
@@ -394,12 +413,11 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
         mesh_label = naming_dict['mesh'][tgt_mesh]
     except KeyError:
         pass
-    prng = np.random.RandomState(1234567890)
+    # prng = np.random.RandomState(1234567890)
     
     linestyle_counter = 0
     color_counter = 0
-    for turb_model in data_dict[tgt_mesh].keys():
-
+    for ind, turb_model in enumerate(sorted(data_dict[tgt_mesh].keys())):
         turb_label = turb_model
         try:
             turb_label = naming_dict['turb'][turb_model]
@@ -408,7 +426,8 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
 
         labelname = " ".join((mesh_label, turb_label))
 
-        color = prng.rand(3,)
+        # color = prng.rand(3,)
+        color = color_list[ind]
         if user_color is not None:
             color = user_color
             if (linestyle_counter > 0) & (np.mod(linestyle_counter,3) == 0):
@@ -427,6 +446,10 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
             linestyle_counter +=1
         else:
             if turb_model in tgt_turb_list:
+                if user_color is None:
+                    color = color_list[color_counter] 
+                    # use counter for color if not assigned by used
+                    color_counter +=1
                 plt.plot(data_dict[tgt_mesh][turb_model][:-2,0],
                         data_dict[tgt_mesh][turb_model][:-2,1]* scale_fac,
                         color = color,
@@ -475,6 +498,7 @@ def plot_mesh_loop(cfd_data_dict, key_select, tgt_mesh_list = None, tgt_turb_lis
                 plot_loop_turbulence_models(cfd_data_dict[key_select], mesh,
                                 tgt_turb_list = tgt_turb_list,
                                 naming_dict = naming_dict)
+
 
 
 def load_experimental_data(ref_folder, ref_pressure_file, ref_heatflux_file):
@@ -718,6 +742,39 @@ def compute_peak_values_solvers(data_dict, tgt_var, start_xcoord = None,
                                                         round_dict[tgt_var])) 
                                                 for val, turb in zip(res_peak, turb)])
         tmp_dict[cfdcode]['peak_loc'] =  dict([(turb, round(val,3)) for val, turb in zip(res_loc, turb)])
+    return tmp_dict
+
+
+def compute_data_bounds(data_dict, key_data_select = 'wallP'):
+    tmp_dict = {}
+    largest_min = 0
+    smallest_max = 100
+    for cfdcode in data_dict.keys():
+        tmp_dict[cfdcode] = {}
+        print(cfdcode)
+        tmp_info_min = {}
+        tmp_info_max = {}
+        print(data_dict[cfdcode].keys())
+        for turb_mod in data_dict[cfdcode][key_data_select]:
+            tmp_info_min[turb_mod] = round(np.min(data_dict[cfdcode][key_data_select][turb_mod][:,0]),
+                                                    5)
+            tmp_info_max[turb_mod] = round(np.max(data_dict[cfdcode][key_data_select][turb_mod][:,0]),
+                                                5)
+            if tmp_info_min[turb_mod] > largest_min:
+                largest_min = tmp_info_min[turb_mod]
+            if tmp_info_max[turb_mod] < smallest_max:
+                smallest_max = tmp_info_max[turb_mod]
+            
+        # xmin, xmax = find_peak_value(data_dict[cfdcode],
+        #                                         key_select = tgt_var,
+        #                                         start_xcoord= start_xcoord,
+        #                                         end_xcoord = end_xcoord)
+
+        tmp_dict[cfdcode]['xmin'] = tmp_info_min
+        tmp_dict[cfdcode]['xmax'] = tmp_info_max
+    tmp_dict['largest_min'] = largest_min
+    tmp_dict['smallest_max'] = smallest_max
+    print(largest_min, smallest_max)
     return tmp_dict
 
 
