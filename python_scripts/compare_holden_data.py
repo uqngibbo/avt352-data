@@ -54,12 +54,12 @@ ylim_low_dict = {
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run45'
-geom_nb = "geom2"
+run_nb = 'run4'
+geom_nb = "geom1"
 solver_color = True
 zoom_flag = True # If true, focus on nose cone region
 
-
+scale_fac_dict = {'wallP': 1e-3, 'wallHeatFlux':1e-6, 'noseHeatFlux':1e-6}
 
 # Defines the solvers selected, the grid and turbulence models
 #   might look cumbersome at first but it's an elegant and simple solution to
@@ -74,53 +74,62 @@ parameter_matrix = {
 #                                             }
                             # },
     # for run4
-            # 'starccm':{ 'mesh':'mesh08',
-            #             'naming_dict': {'mesh':
-            #                                 {'mesh08': 'STAR-CCM+'},
-            #                             'turb':
-            #                                 {'SST': 'k-$\\omega$ SST'} 
-            #                         }
-            #             },
-            # 'eilmer':{ 'mesh':'mesh1',
-            #             'naming_dict': {'mesh':
-            #                                 {'mesh1': 'Eilmer'},
-            #                             'turb':
-            #                                 {'komega': 'Wilcox k-$\\omega$ 2006'} 
-            #                         }  
-            #             },
-            # 'ansys_aselsan':{ 'mesh':'meshXX',
-            #                 'turb_model_list': ['SST1T','SA1T'],
+            'starccm':{ 'mesh':'mesh08',
+                        'naming_dict': {'mesh':
+                                            {'mesh08': 'STAR-CCM+'},
+                                        'turb':
+                                            {'SST': 'k-$\\omega$ SST'} 
+                                    }
+                        },
+            'eilmer':{ 'mesh':'mesh1',
+                        'naming_dict': {'mesh':
+                                            {'mesh1': 'Eilmer'},
+                                        'turb':
+                                            {'komega': 'Wilcox k-$\\omega$ 2006'} 
+                                    }  
+                        },
+            'ansys_aselsan':{ 'mesh':'meshXX',
+                            'turb_model_list': ['SST1T','SA1T'],
+                        #     'turb_model_list': ['SST1T','SA1T', 'SST2T','SA2T'],
 
-            #             'naming_dict': {'mesh':
-            #                                 {'meshXX': 'Ansys Fluent (Aselsan)'},
-            #                             'turb':
-            #                                 {'SST1T': 'k-$\\omega$ SST',
-            #                                 'SA1T': 'SA'} 
-            #                         }
-            #             },
-            # 'SU2':{ 'mesh':'meshXX',
-            #             'naming_dict': {'mesh':
-            #                                 {'meshXX': 'SU2'},
-            #                             'turb':
-            #                                 {'SST': 'k-$\\omega$ SST'} 
-            #                         }  
-            #             },
-            # 'overflow':{ 'mesh':'mesh2',
-            #             'naming_dict': {'mesh':
-            #                                 {'mesh2': 'OVERFLOW'},
-            #                             'turb':
-            #                                 {'SST': 'k-$\\omega$ SST'}
-            #                         } 
-            #             },
-            # 'vulcan':{ 'mesh':'meshXX',
-            #             'turb_model_list': ['SST','SAQCRV'],
-            #             'naming_dict': {'mesh':
-            #                                 {'meshXX': 'VULCAN'},
-            #                             'turb':
-            #                                 {'SST': 'k-$\\omega$ SST',
-            #                                 'SAQCRV': 'SA 2013 QCR-V'} 
-            #                         }  
-            #             },
+                        'naming_dict': {'mesh':
+                                            {'meshXX': 'Ansys Fluent (Aselsan)'},
+                                        'turb':
+                                            {'SST1T': 'k-$\\omega$ SST',
+                                            'SA1T': 'SA'} 
+                                    }
+                        },
+            'SU2':{ 'mesh':'meshXX',
+                        'naming_dict': {'mesh':
+                                            {'meshXX': 'SU2'},
+                                        'turb':
+                                            {'SST': 'k-$\\omega$ SST'} 
+                                    }  
+                        },
+            'overflow':{ 'mesh':'mesh2',
+                        'naming_dict': {'mesh':
+                                            {'mesh2': 'OVERFLOW'},
+                                        'turb':
+                                            {'SST': 'k-$\\omega$ SST'}
+                                    } 
+                        },
+            'vulcan':{ 'mesh':'meshXX',
+                        'turb_model_list': #['SST','SSTKL', 'SSTV'],
+                                        ['SSTV','SSTVnorhok'],
+                                        # ['SA', 'SAQCRV'],
+                        'naming_dict': {'mesh':
+                                            {'meshXX': ''},
+                                        'turb':
+                                            {'SST': 'Menter-SST',
+                                            # 'SAQCRV': 'SA 2013 QCR-V',
+                                            'SSTKL':'Menter-SST-KL',
+                                            'SSTV':'Menter-SST-V',
+                                            'SSTVnorhok':'Menter-SST-V (no 2/3 $\\rho k$)',
+                                            'SA':'SA-noft2',
+                                            'SAQCRV': 'SA-noft2-QCR-V',
+                                            } 
+                                    }  
+                        },
     # for run6
             # 'eilmer':{ 'mesh':'mesh1',
             #             'naming_dict': {'mesh':
@@ -141,87 +150,105 @@ parameter_matrix = {
             #                         }
             #             },
 
-            # for run 45
-                    'starccm':{ 'mesh':'mesh09',
-                                'naming_dict': {'mesh':
-                                                    {'mesh09': 'STAR-CCM+'},
-                                                'turb':
-                                                    {'SST': 'k-$\\omega$ SST'} 
-                                            }
-                                },
-                    'eilmer':{ 'mesh':'mesh1',
-                                'naming_dict': {'mesh':
-                                                    {'mesh1': 'Eilmer'},
-                                                'turb':
-                                                    {'komega': 'Wilcox k-$\\omega$ 2006'} 
-                                            }  
-                                },
-                    'ansys_aselsan':{ 'mesh':'mesh2',
-                                'naming_dict': {'mesh':
-                                                    {'mesh2': 'Ansys Fluent (Aselsan)'},
-                                                'turb':
-                                                    {'SST': 'k-$\\omega$ SST'} 
-                                            }  
-                                },
-                    'vulcan':{ 'mesh':'meshXX',
-                                # 'turb_model_list': ['SST'],
-                                'turb_model_list': ['SST', 'SAQCRV'],
-                                'naming_dict': {'mesh':
-                                                    {'meshXX': 'VULCAN'},
-                                                'turb':
-                                                    {'SST': 'k-$\\omega$ SST',
-                                                    'SAQCRV': 'SA 2013 QCR-V'} 
-                                            }  
-                                },
+            # # for run 45
+                        # 'vulcan':{ 'mesh':'meshXX',
+                        # 'turb_model_list': 
+                        #                 ['SST','SSTKL', 'SSTV'],
+                        #                 # ['SSTV','SSTVnorhok'],
+                        #                 # ['SA', 'SAQCRV'],
+                        # 'naming_dict': {'mesh':
+                        #                     {'meshXX': ''},
+                        #                 'turb':
+                        #                     {'SST': 'Menter-SST',
+                        #                     # 'SAQCRV': 'SA 2013 QCR-V',
+                        #                     'SSTKL':'Menter-SST-KL',
+                        #                     'SSTV':'Menter-SST-V',
+                        #                     'SSTVnorhok':'Menter-SST-V (no 2/3 $\\rho k)$',
+                        #                     'SA':'SA-noft2',
+                        #                     'SAQCRV': 'SA-noft2-QCR-V',
+                        #                     } 
+                        #             }  
+                        # },
+            #         'starccm':{ 'mesh':'mesh09',
+            #                     'naming_dict': {'mesh':
+            #                                         {'mesh09': 'STAR-CCM+'},
+            #                                     'turb':
+            #                                         {'SST': 'k-$\\omega$ SST'} 
+            #                                 }
+            #                     },
+            #         'eilmer':{ 'mesh':'mesh1',
+            #                     'naming_dict': {'mesh':
+            #                                         {'mesh1': 'Eilmer'},
+            #                                     'turb':
+            #                                         {'komega': 'Wilcox k-$\\omega$ 2006'} 
+            #                                 }  
+            #                     },
+            #         'ansys_aselsan':{ 'mesh':'mesh2',
+            #                     'naming_dict': {'mesh':
+            #                                         {'mesh2': 'Ansys Fluent (Aselsan)'},
+            #                                     'turb':
+            #                                         {'SST': 'k-$\\omega$ SST'} 
+            #                                 }  
+            #                     },
+            #         'vulcan':{ 'mesh':'meshXX',
+            #                     # 'turb_model_list': ['SST'],
+            #                     'turb_model_list': ['SST', 'SAQCRV'],
+            #                     'naming_dict': {'mesh':
+            #                                         {'meshXX': 'VULCAN'},
+            #                                     'turb':
+            #                                         {'SST': 'k-$\\omega$ SST',
+            #                                         'SAQCRV': 'SA 2013 QCR-V'} 
+            #                                 }  
+            #                     },
 
-                    'cadence':{ 'mesh':'meshXX',
-                                'turb_model_list': ['SSCEARSM_Prt086Lemmon'],
-                                'naming_dict': {'mesh':
-                                                    {'meshXX': 'Fidelity Flow DBS'},
-                                                'turb':
-                                                    {'SSCEARSM_Prt086Lemmon': 'SSC-EARSM'} 
-                                            }  
-                                },
-                    'SU2':{ 'mesh':'meshXX',
-                        'naming_dict': {'mesh':
-                                            {'meshXX': 'SU2'},
-                                        'turb':
-                                            {'SST': 'k-$\\omega$ SST'} 
-                                    }
-                        },
-                    'overflow':{ 'mesh':'mesh2',
-                                # 'turb_model_list': ['SST'],
-                                'naming_dict': {'mesh':
-                                                    {'mesh2': 'OVERFLOW'},
-                                                'turb':
-                                                    {'SST': 'k-$\\omega$ SST'}
-                                            } 
-                                },
-                    # # ##--------second plot------------------------#
-                    'tau':{ 'mesh':'meshXX',
-                                'turb_model_list': ['Menter_SST', 'SAnegN=646308QCR=off'],
-                                'naming_dict': {'mesh':
-                                                    {'meshXX': 'TAU'},
-                                                'turb':
-                                                    {'Menter_SST': 'k-$\\omega$ SST',
-                                                    'SAnegN=646308QCR=off': 'SA-neg'} 
-                                            }  
-                                },
-                    'coda':{ 'mesh':'meshXX',
-                                'naming_dict': {'mesh':
-                                                    {'meshXX': 'HyperCODA'},
-                                                'turb':
-                                                    {'SAneg': 'SA-neg'} 
-                                            }  
-                                },
-                    # # # ##--------------------------------------------#
-                    'ansys_inc':{ 'mesh':'meshXX',
-                                'naming_dict': {'mesh':
-                                                    {'meshXX': 'Ansys Fluent (Ansys Inc.)'},
-                                                'turb':
-                                                    {'GEKO': 'GEKO'} 
-                                            }  
-                                },
+            #         'cadence':{ 'mesh':'meshXX',
+            #                     'turb_model_list': ['SSCEARSM_Prt086Lemmon'],
+            #                     'naming_dict': {'mesh':
+            #                                         {'meshXX': 'Fidelity Flow DBS'},
+            #                                     'turb':
+            #                                         {'SSCEARSM_Prt086Lemmon': 'SSC-EARSM'} 
+            #                                 }  
+            #                     },
+            #         'SU2':{ 'mesh':'meshXX',
+            #             'naming_dict': {'mesh':
+            #                                 {'meshXX': 'SU2'},
+            #                             'turb':
+            #                                 {'SST': 'k-$\\omega$ SST'} 
+            #                         }
+            #             },
+            #         'overflow':{ 'mesh':'mesh2',
+            #                     # 'turb_model_list': ['SST'],
+            #                     'naming_dict': {'mesh':
+            #                                         {'mesh2': 'OVERFLOW'},
+            #                                     'turb':
+            #                                         {'SST': 'k-$\\omega$ SST'}
+            #                                 } 
+            #                     },
+            #         # # ##--------second plot------------------------#
+            #         'tau':{ 'mesh':'meshXX',
+            #                     'turb_model_list': ['Menter_SST', 'SAnegN=646308QCR=off'],
+            #                     'naming_dict': {'mesh':
+            #                                         {'meshXX': 'TAU'},
+            #                                     'turb':
+            #                                         {'Menter_SST': 'k-$\\omega$ SST',
+            #                                         'SAnegN=646308QCR=off': 'SA-neg'} 
+            #                                 }  
+            #                     },
+            #         'coda':{ 'mesh':'meshXX',
+            #                     'naming_dict': {'mesh':
+            #                                         {'meshXX': 'HyperCODA'},
+            #                                     'turb':
+            #                                         {'SAneg': 'SA-neg'} 
+            #                                 }  
+            #                     },
+            #         # # # ##--------------------------------------------#
+            #         'ansys_inc':{ 'mesh':'meshXX',
+            #                     'naming_dict': {'mesh':
+            #                                         {'meshXX': 'Ansys Fluent (Ansys Inc.)'},
+            #                                     'turb':
+            #                                         {'GEKO': 'GEKO'} 
+            #                                 }  
+            #                     },
                     # # 'cadence':{ 'mesh':'meshXXX',
                     # #             'turb_model_list': ['SSTa10355_Prt086Lemmon','SBSLPrt086'],
                     # #             'naming_dict': {'mesh':
@@ -477,11 +504,17 @@ key_select = 'wallP'
 #--------------------------------#
 
 if ref_pressure_data is not None:
+    labelplot = 'ref'
+    if (zoom_flag) and (run_nb in ['run4', 'run6']):
+        labelplot = '_ref'
     # plt.plot(ref_pressure_data[:,0], ref_pressure_data[:,1], linestyle = 'none', marker = 'o')
-    plt.errorbar(ref_pressure_data[:,0], ref_pressure_data[:,1],
+    plt.errorbar(ref_pressure_data[:,0],
+                    ref_pressure_data[:,1]*scale_fac_dict[key_select],
                     fmt='o', linestyle = 'none',
-                    yerr = ref_pressure_data[:,1]*3/100,  elinewidth=3,
-                    label='ref')
+                    yerr = ref_pressure_data[:,1]*3/100*scale_fac_dict[key_select],
+                    elinewidth=3,
+                    label=labelplot,
+                    color= 'k')
     # plt.errorbar(x, y, yerr=dy, fmt='o', color='black',
     #              ecolor='lightgray', elinewidth=3, capsize=0);
 
@@ -509,7 +542,8 @@ for ind, cfdcode in enumerate(parameter_matrix.keys()):
                             parameter_matrix[cfdcode]['mesh'],
                             tgt_turb_list = tgt_turb_list,
                             naming_dict = naming_dict,
-                            user_color = solver_specific_color
+                            user_color = solver_specific_color,
+                            scale_fac = scale_fac_dict[key_select]
                             )
 
 # plt.yscale('log')
@@ -530,7 +564,7 @@ if zoom_flag:
     plt.ylim(top = ylim_up_dict[run_nb][key_select])
     plt.ylim(bottom = ylim_low_dict[run_nb][key_select])
 
-plt.ylabel('Pressure (Pa)')
+plt.ylabel('Pressure (kPa)')
 plt.tight_layout()
 plt.legend(fontsize = 7,loc = 'upper left')
 plt.savefig('wall_pressure.png', dpi = 300)
@@ -548,9 +582,17 @@ key_select = 'wallHeatFlux'
 
 #------------------------------------------------------------#
 if ref_heatflux_data is not None:
-    plt.errorbar(ref_heatflux_data[:,0], ref_heatflux_data[:,1], fmt='o', linestyle = 'none',
-                        yerr=ref_heatflux_data[:,1]*5/100,  elinewidth=3,
-                label='ref')
+    labelplot = 'ref'
+    if (zoom_flag) and (run_nb in ['run4', 'run6']):
+        labelplot = '_ref'
+
+    plt.errorbar(ref_heatflux_data[:,0],
+                ref_heatflux_data[:,1]*scale_fac_dict[key_select],
+                        fmt='o', linestyle = 'none',
+                        yerr=ref_heatflux_data[:,1]*5/100*scale_fac_dict[key_select],
+                        elinewidth=3,
+                label=labelplot,
+                color= 'k')
 
 for ind, cfdcode in enumerate(parameter_matrix.keys()):
 
@@ -576,7 +618,8 @@ for ind, cfdcode in enumerate(parameter_matrix.keys()):
                             parameter_matrix[cfdcode]['mesh'],
                             tgt_turb_list = tgt_turb_list,
                             naming_dict = naming_dict,
-                            user_color = solver_specific_color)
+                            user_color = solver_specific_color,
+                            scale_fac = scale_fac_dict[key_select])
 
 
 # plt.yscale('log')
@@ -584,16 +627,16 @@ for ind, cfdcode in enumerate(parameter_matrix.keys()):
 # apply pre-defined, run and geometry dependent x-axis limit
 helpfunc.apply_axes_limits(run_nb, geom_nb)
 if run_nb == 'run14':
-    plt.ylim(top = 1e6)
+    plt.ylim(top = 1e6*scale_fac_dict[key_select])
 if run_nb == 'run4':
-    plt.ylim(top = 5e6)
-    plt.ylim(bottom = -1e3)
+    plt.ylim(top = 5e6*scale_fac_dict[key_select])
+    plt.ylim(bottom = -1e3*scale_fac_dict[key_select])
 if run_nb == 'run45':
-    plt.ylim(top = 6.5e6)
-    plt.ylim(bottom = -1e3)
+    plt.ylim(top = 6.5e6*scale_fac_dict[key_select])
+    plt.ylim(bottom = -1e3*scale_fac_dict[key_select])
 
 else:
-    plt.ylim(top=ylim_up_dict[run_nb][key_select])
+    plt.ylim(top=ylim_up_dict[run_nb][key_select]*scale_fac_dict[key_select])
     plt.ylim(bottom=0)
 
 if geom_nb == 'geom2':
@@ -605,11 +648,11 @@ if run_nb == 'run33':
 if zoom_flag:
     key_select = 'noseHeatFlux'
     plt.xlim([0,2])
-    plt.ylim(top = ylim_up_dict[run_nb][key_select])
-    plt.ylim(bottom = 0e6)
+    plt.ylim(top = ylim_up_dict[run_nb][key_select]*scale_fac_dict[key_select])
+    plt.ylim(bottom = 0e6*scale_fac_dict[key_select])
 
 
-plt.ylabel('Heat Flux (W / $m^2$)')
+plt.ylabel('Heat Flux (MW / $m^2$)')
 
 plt.tight_layout()
 
