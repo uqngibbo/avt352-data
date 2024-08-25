@@ -27,10 +27,19 @@ length_dict = {'geom1': {'total':2852.2676 * mm_to_m,
             }
 
 
-exp_sep_onset_dict = {'run4': 2.5743,
-                        # 'run6':
-        
-}
+exp_sep_onset_dict = {
+                    'run4': 2.5743,
+                    'run6': 2.5606,
+                    'run45': 2.3464,
+                    'run28': 2.3268,
+                    'run34': 2.3271,
+                    'run33':2.2996,
+                    'run14': 2.2993,
+                    'run41': 2.35, #2.3465 # or 2.3561 as looks not separated, so end of cone as location?
+                    'run37': 2.3153
+                }
+
+
 # import re
 # # List of filenames
 # filenames = [
