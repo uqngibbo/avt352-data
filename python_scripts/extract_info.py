@@ -17,8 +17,8 @@ import helper_functions as helpfunc
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run37'
-geom_nb = "geom2"
+run_nb = 'run6'
+geom_nb = "geom1"
 
 
 
@@ -51,10 +51,10 @@ parameter_matrix = {
             #                                     'SA', 'SSTVnorhok', 'SSTKL']
             #             },
     # for run6
-        # 'eilmer':{ 'mesh':'mesh1',
-        #             },
-        # 'ansys_aselsan':{ 'mesh':'mesh4',
-        #             },
+        'eilmer':{ 'mesh':'mesh1',
+                    },
+        'ansys_aselsan':{ 'mesh':'mesh4',
+                    },
 
         # for run 45
         # 'starccm':{ 'mesh':'mesh09',
@@ -114,14 +114,14 @@ parameter_matrix = {
         #             }  
 
         # run 41, 37, 34
-        'gaspex':{ 'mesh':'mesh00',
-                },
-        'eilmer':{ 'mesh':'mesh1',
-            },
-        'starccm':{ 'mesh':'mesh09',
-                    },
-        'SU2':{ 'mesh':'meshXX',
-                        }
+        # 'gaspex':{ 'mesh':'mesh00',
+        #         },
+        # 'eilmer':{ 'mesh':'mesh1',
+        #     },
+        # 'starccm':{ 'mesh':'mesh09',
+        #             },
+        # 'SU2':{ 'mesh':'meshXX',
+        #                 }
     #-------------------------------------------------_#
     }
 
@@ -202,6 +202,14 @@ res_peak_q = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallHeatFlux',
                                                                 start_xcoord= 1,
                                                                 end_xcoord = None)
 
+
+sep_list = []
+for solver in sep_dict.keys():
+    for turbmod in sep_dict[solver].keys():
+        sep_list.append(sep_dict[solver][turbmod])
+
+
+
 xdata_bounds_dict = helpfunc.compute_data_bounds(reduced_dict)
 
 sep_peak_dict = helpfunc.join_separation_dicts(sep_dict, res_peak_p, res_peak_q)
@@ -214,6 +222,9 @@ variations = helpfunc.obtain_variations(sep_peak_dict)
 
 bb = helpfunc.create_latex_table_variations(variations, run_nb)
 print(bb)
+
+
+
 #-- go back to orginal directory---#
 os.chdir(work_dir)
 
