@@ -30,7 +30,7 @@ cfd_sep = helpfunc.get_cfd_separation_values()
 
 geom_names_dict = {'geom1': '6/42 cone-flare' , 'geom2': '7/40 cone-flare'}
 
-geom_select = 'geom1'
+geom_select = 'geom2'
 
 vertical_boxplot = False
 
@@ -78,6 +78,8 @@ else:
     plt.plot([geom_info[geom_select]['cone'], geom_info[geom_select]['total']],
                 [len(labels)/2, len(labels)+1], linestyle = '--', color = 'b',
                 label = 'cone-flare \n representation')
+
+# showmeans=True, meanline=True, meanprops={'color': 'red', 'linewidth': 2}
 
 # # Given parameters
 # start_x = 0
