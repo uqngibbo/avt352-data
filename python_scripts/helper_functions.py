@@ -39,12 +39,26 @@ exp_sep_onset_dict = {
                     'run37': 2.3153
                 }
 
+cfd_sep_onset_dict = { 
+                    'run4': (2.441,2.628),
+                    'run6': (2.51,2.539),
+                    'run45': (2.284,2.35),
+                    'run28': (2.277,2.354),
+                    'run34': (2.293,2.349),
+                    'run33': (2.242,2.309),
+                    'run14': (2.278,2.353),
+                    'run41': (2.305,2.349),
+                    'run37': (2.27,2.349)
+}
 
 def get_experimental_separation():
     return exp_sep_onset_dict
 
 def get_geometry_information():
     return length_dict
+
+def get_cfd_separation_bounds():
+    return cfd_sep_onset_dict
 # import re
 # # List of filenames
 # filenames = [
