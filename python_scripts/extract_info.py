@@ -35,27 +35,32 @@ parameter_matrix = {
 #                                                     {'SST': 'k-$\\omega$ SST'}
 #                                             }
                             # },
-    #for run4
-            # 'starccm':{ 'mesh':'mesh08',
-            #         },
-            # 'eilmer':{ 'mesh':'mesh1',
-            #             },
-            # 'ansys_aselsan':{ 'mesh':'meshXX',
-            #             },
-            # 'SU2':{ 'mesh':'meshXX',
-            #             },
-            # 'overflow':{ 'mesh':'mesh2',
-            #             },
-            # 'vulcan': { 'mesh':'meshXX',
-            #             'turb_model_list': ['SST', 'SSTV', 'SAQCRV',
-            #                                     'SA', 'SSTVnorhok', 'SSTKL']
-            #             },
+    # #for run4
+    #         'starccm':{ 'mesh':'mesh08',
+    #                 },
+    #         'eilmer':{ 'mesh':'mesh1',
+    #                     },
+    #         'ansys_aselsan':{ 'mesh':'meshXX',
+    #                     },
+    #         'SU2':{ 'mesh':'meshXX',
+    #                     },
+    #         'overflow':{ 'mesh':'mesh2',
+    #                     },
+    #         'vulcan': { 'mesh':'meshXX',
+    #                     'turb_model_list': ['SST', 'SSTV', 'SAQCRV',
+    #                                             'SA', 'SSTVnorhok', 'SSTKL']
+    #                     },
+    #         'cadence':{ 'mesh':'meshXX',
+    #                     'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS'],
+    #                     },
     # for run6
         'eilmer':{ 'mesh':'mesh1',
                     },
         'ansys_aselsan':{ 'mesh':'mesh4',
                     },
-
+        'cadence':{ 'mesh':'meshXX',
+                        'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS'],
+                        },
         # for run 45
         # 'starccm':{ 'mesh':'mesh09',
         #             },
@@ -166,6 +171,13 @@ integrated_dict = helpfunc.compute_integral_quantities(reduced_dict,
                                 scale_by_integral_x = True
                                 )
 
+# for key, value in integrated_dict.items():
+#     integrated_dict[key] = sorted(compute_integral_quantities)
+
+# # Extract the first nested key for each entry and sort by it
+# sorted_data = dict(sorted(integrated_dict.items(), key=lambda item: list(item[1].keys())[0]))
+
+
 # Get latex table, NOTE: print it and copy in latex
 latex_table = helpfunc.create_latex_table_integrated(integrated_dict, run_nb,
                 resizebox = True)
@@ -177,7 +189,7 @@ print(latex_table)
 # Specify the bounds too look for largest grad of pressure. Run dependent
 # NOTE: We might have to Taylor bounds for different solvers, TBD
 if "14" in run_nb:
-    xbounds = [2.1,2.355]  # for run 14
+    xbounds = [2.1,2.350]  # for run 14
 elif "28" in run_nb:
     xbounds = [1.0,2.37]  # for run 28
 elif "33" in run_nb:

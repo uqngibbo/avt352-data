@@ -70,7 +70,7 @@ cfd_sep_onset_vals_dict = {
  2.519]
 
 ,
-                    'run6': [2.539, 2.51],
+                    'run6': [2.539, 2.51, 2.623],
                 }, 
                 'geom2':{
 
@@ -132,6 +132,7 @@ def get_cfd_separation_values():
 
 
 def filter_files_with_keyword(file_list):
+    file_list = [filename for filename in file_list if filename.endswith('.dat')]
     return [tmp for tmp in file_list if ('wallHeatFlux' in tmp) or ('wallP' in tmp)]
 
 
@@ -363,6 +364,7 @@ def load_data_files_ccm(tgt_files, dict_keys, turb_models, dtype = 'float', skip
 
             if solver == 'SU2':
                 print("Reading data for solver ", solver)
+                print(filename)
                 result[key1][key2][key3] = np.loadtxt(filename)
             elif solver != 'cadence':
                 result[key1][key2][key3] =  np.unique(np.loadtxt(
@@ -927,7 +929,8 @@ def obtain_mapping_dict():
         'SSTV': 'k-$\\omega$ SST-V',
         'SSTVnorhok': 'k-$\\omega$ SST-V no 2/3 rho*k',
         'SSTKL': 'k-$\\omega$ SST-KL',
-        'SAQCRV': 'SA 2013 QCR-V'
+        'SAQCRV': 'SA 2013 QCR-V',
+        'SSCEARSM_Prt086Lemmon_LDFSS': 'SSC-EARSM'
     }
 
     return mapping_dict
