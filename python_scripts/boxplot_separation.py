@@ -17,6 +17,10 @@ import helper_functions as helpfunc
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 
+limits_dict = {'geom1':{'xlim': {'min':2.4, 'max':2.75}},
+                'geom2':{'xlim': {'min':2.2, 'max':2.45}
+                }
+            }
 
 
 work_dir = os.getcwd()
@@ -66,18 +70,33 @@ for ind, run_nb in enumerate(labels):
     else:
         ax.scatter(exp_sep[run_nb], ind+1,color='red', label = label)  # (x=1, y=7)
 
-if geom_select == 'geom1':
-    plt.plot([1, geom_info[geom_select]['cone']], [0, len(labels) -0.5], linestyle = '--',
-                    color = 'b')
-    plt.plot([geom_info[geom_select]['cone'], geom_info[geom_select]['total']],
-                [len(labels) -0.5, len(labels)+1], linestyle = '--', color = 'b',
-                label = 'cone-flare representation')
-else:
-    plt.plot([1, geom_info[geom_select]['cone']], [0, len(labels)/2], linestyle = '--',
-                    color = 'b')
-    plt.plot([geom_info[geom_select]['cone'], geom_info[geom_select]['total']],
-                [len(labels)/2, len(labels)+1], linestyle = '--', color = 'b',
-                label = 'cone-flare \n representation')
+
+# Create a secondary axis that shares the same x-axis
+ax2 = ax.twinx()
+
+tmp_geom = geom_info[geom_select]
+cone_flare_x = [0,tmp_geom['cone'], tmp_geom['total']]
+cone_flare_y = [0,
+                tmp_geom['cone']*np.sin(np.deg2rad(tmp_geom['angle_cone'])),
+                tmp_geom['cone']*np.sin(np.deg2rad(tmp_geom['angle_cone'])) \
+                + tmp_geom['flare']*np.sin(np.deg2rad(tmp_geom['angle_flare']))
+                ]
+ax2.plot(cone_flare_x, cone_flare_y, linestyle = '--', label = 'cone-flare \n geometry')
+ax2.set_ylabel('y (m)')
+
+
+# if geom_select == 'geom1':
+#     plt.plot([1, geom_info[geom_select]['cone']], [0, len(labels) -0.5], linestyle = '--',
+#                     color = 'b')
+#     plt.plot([geom_info[geom_select]['cone'], geom_info[geom_select]['total']],
+#                 [len(labels) -0.5, len(labels)+1], linestyle = '--', color = 'b',
+#                 label = 'cone-flare representation')
+# else:
+#     plt.plot([1, geom_info[geom_select]['cone']], [0, len(labels)/2], linestyle = '--',
+#                     color = 'b')
+#     plt.plot([geom_info[geom_select]['cone'], geom_info[geom_select]['total']],
+#                 [len(labels)/2, len(labels)+1], linestyle = '--', color = 'b',
+#                 label = 'cone-flare \n representation')
 
 # showmeans=True, meanline=True, meanprops={'color': 'red', 'linewidth': 2}
 
@@ -105,7 +124,7 @@ else:
     ax.set_ylabel('runs')
 
 # Set title and labels
-ax.set_title('Boxplot for '  + geom_names_dict[geom_select])
+# ax.set_title('Box plot for '  + geom_names_dict[geom_select])
 
 
 if geom_select == 'geom1':
@@ -114,6 +133,13 @@ if geom_select == 'geom1':
 else:
     plt.xlim(left = 2.2)
     plt.xlim(right = 2.45)
+
+
+cone_ymin = (limits_dict[geom_select]['xlim']['min']) *np.sin(np.deg2rad(tmp_geom['angle_cone']))
+# cone_ymax = cone_ymin + (limits_dict[geom_select]['xlim']['max']-limits_dict[geom_select]['xlim']['min']) *np.sin(np.deg2rad(tmp_geom['angle_flare']))
+cone_ymax = cone_ymin + (limits_dict[geom_select]['xlim']['max']-tmp_geom['cone']) *np.sin(np.deg2rad(tmp_geom['angle_flare']))
+ax2.set_ylim(cone_ymin, cone_ymax)
+
 
 plt.legend()
 plt.tight_layout()
