@@ -30,13 +30,17 @@ work_dir = os.getcwd()
 
 exp_sep = helpfunc.get_experimental_separation()
 geom_info = helpfunc.get_geometry_information()
-cfd_sep = helpfunc.get_cfd_separation_values()
 
 geom_names_dict = {'geom1': '6/42 cone-flare' , 'geom2': '7/40 cone-flare'}
 
-geom_select = 'geom2'
+geom_select = 'geom1'
+variable_of_interest = 'heatflux'
 font_size = 14
 vertical_boxplot = False
+
+
+cfd_sep = helpfunc.get_cfd_peak_vals_and_locs_values(variable_of_interest, 'location')
+
 
 data = []
 labels = []
@@ -60,15 +64,15 @@ fig, ax = plt.subplots()
 # Create boxplots
 ax.boxplot(data, vert = vertical_boxplot)
 
-# Plot a point on the first boxplot (Category A)
-for ind, run_nb in enumerate(labels):
-    label = ''
-    if ind == 0:
-        label = 'experimental \n separation onset'
-    if vertical_boxplot:
-        ax.scatter(ind+1, exp_sep[run_nb], color='red', label = label)  # (x=1, y=7)
-    else:
-        ax.scatter(exp_sep[run_nb], ind+1,color='red', label = label)  # (x=1, y=7)
+# # Plot a point on the first boxplot (Category A)
+# for ind, run_nb in enumerate(labels):
+#     label = ''
+#     if ind == 0:
+#         label = 'experimental \n separation onset'
+#     if vertical_boxplot:
+#         ax.scatter(ind+1, exp_sep[run_nb], color='red', label = label)  # (x=1, y=7)
+#     else:
+#         ax.scatter(exp_sep[run_nb], ind+1,color='red', label = label)  # (x=1, y=7)
 
 
 # Create a secondary axis that shares the same x-axis
@@ -123,7 +127,7 @@ if vertical_boxplot:
 
 else:
     ax.set_yticklabels(labels)
-    ax.set_xlabel('axial separation onset location (m)', fontsize=font_size)
+    ax.set_xlabel('axial location (m)', fontsize=font_size)
     ax.set_ylabel('runs', fontsize=font_size)
 
 # Set title and labels
@@ -131,11 +135,11 @@ else:
 
 
 if geom_select == 'geom1':
-    plt.xlim(left = 2.4)
-    plt.xlim(right = 2.75)
+    plt.xlim(left = 2.5)
+    plt.xlim(right = 2.85)
 else:
-    plt.xlim(left = 2.2)
-    plt.xlim(right = 2.45)
+    plt.xlim(left = 2.3)
+    plt.xlim(right = 2.6)
 
 # change the fontsize
 ax.tick_params(axis='x', labelsize=font_size)
@@ -162,7 +166,7 @@ else:
 
 # plt.legend()
 plt.tight_layout()
-plt.savefig('boxplot_'+geom_select+'.png', dpi = 300)
+plt.savefig('boxplot_loc_'+geom_select+'_'+ variable_of_interest+'.png', dpi = 300)
 # Display the plot
 plt.show()
 

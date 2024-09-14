@@ -54,53 +54,207 @@ cfd_sep_onset_bounds_dict = {
 cfd_sep_onset_vals_dict = { 
                 'geom1': {
                     'run4': [2.571,
- 2.531,
- 2.628,
- 2.627,
- 2.509,
- 2.489,
- 2.624,
- 2.614,
- 2.588,
- 2.61,
- 2.549,
- 2.472,
- 2.457,
- 2.441,
- 2.519]
-
-,
-                    'run6': [2.539, 2.51, 2.623],
+                            2.531,
+                            2.628,
+                            2.627,
+                            2.509,
+                            2.489,
+                            2.616,
+                            2.415,
+                            2.61,
+                            2.549,
+                            2.472,
+                            2.457,
+                            2.441,
+                            2.519,
+                            2.614],
+                    'run6': [2.539, 2.51, 2.623, 2.565],
                 }, 
                 'geom2':{
 
                     'run45': [2.343,
  2.312,
  2.303,
- 2.338,
+ 2.336,
  2.333,
- 2.291,
+ 2.289,
+ 2.31,
+ 2.35,
  2.35,
  2.312,
+ 2.293,
+ 2.303,
+ 2.348,
+ 2.35,
+ 2.35,
  2.348,
  2.333,
- 2.349,
+ 2.343,
  2.349,
  2.325,
  2.297,
  2.29,
  2.284,
  2.303,
- 2.349,
- 2.323],
-                    'run28': [2.291, 2.292, 2.312, 2.277, 2.284, 2.318, 2.353],
-                    'run34': [2.295, 2.293, 2.316, 2.349],
+ 2.235],
+
+
+                    'run28': [2.291, 2.292, 2.312, 2.277, 2.284, 2.318, 2.334],
+                    'run34': [2.295, 2.293, 2.316, 2.337],
                     'run33': [2.259, 2.242, 2.251, 2.297, 2.309],
                     'run14': [2.278, 2.265, 2.279, 2.308, 2.352],
-                    'run41': [2.284, 2.27, 2.288, 2.349],
+                    'run41': sorted([2.284, 2.27, 2.288, 2.349]),
                     'run37': [2.305, 2.307, 2.345, 2.349]
 }
 }
+
+
+
+
+
+cfd_peak_pressure_locs_vals_dict = { 
+                'geom1': {
+                    'run4': [2.695,
+ 2.707,
+ 2.676,
+ 2.677,
+ 2.719,
+ 2.729,
+ 2.652,
+ 2.753,
+ 2.678,
+ 2.701,
+ 2.737,
+ 2.745,
+ 2.753,
+ 2.713,
+ 2.672],
+
+                    'run6': [2.7, 2.713, 2.687, 2.701]
+                }, 
+#                 'geom2':{
+
+#                     'run45': 
+
+
+#                     'run28': 
+#                     'run34': 
+#                     'run33': 
+#                     'run14': 
+#                     'run41': 
+#                     'run37': 
+# }
+}
+
+cfd_peak_pressure_vals_dict = { 
+                'geom1': {
+                    'run4': [150.38,
+ 161.82,
+ 103.67,
+ 103.77,
+ 162.8,
+ 163.05,
+ 140.04,
+ 175.32,
+ 103.87,
+ 145.22,
+ 173.18,
+ 171.13,
+ 169.78,
+ 161.78,
+ 109.1],
+
+
+                    'run6':  [220.09, 225.57, 138.09, 168.94]
+                }, 
+#                 'geom2':{
+
+#                     'run45': 
+
+
+#                     'run28': 
+#                     'run34': 
+#                     'run33': 
+#                     'run14': 
+#                     'run41': 
+#                     'run37': 
+# }
+}
+
+
+
+cfd_peak_heatflux_locs_vals_dict = { 
+                'geom1': {
+                    'run4': [2.694,
+ 2.706,
+ 2.695,
+ 2.708,
+ 2.718,
+ 2.729,
+ 2.653,
+ 2.742,
+ 2.698,
+ 2.681,
+ 2.737,
+ 2.744,
+ 2.753,
+ 2.713,
+ 2.671],
+
+
+                    'run6':  [2.7, 2.713, 2.665, 2.697]
+                }, 
+#                 'geom2':{
+
+#                     'run45': 
+
+
+#                     'run28': 
+#                     'run34': 
+#                     'run33': 
+#                     'run14': 
+#                     'run41': 
+#                     'run37': 
+# }
+}
+
+
+cfd_peak_heatflux_vals_dict = { 
+                'geom1': {
+                    'run4': [3.722,
+ 4.185,
+ 1.41,
+ 1.392,
+ 3.836,
+ 3.809,
+ 2.701,
+ 2.534,
+ 1.42,
+ 2.44,
+ 4.072,
+ 3.869,
+ 3.679,
+ 3.631,
+ 3.364],
+
+
+                    'run6':  [6.642, 6.33, 4.011, 5.858]
+                }, 
+#                 'geom2':{
+
+#                     'run45': 
+
+
+#                     'run28': 
+#                     'run34': 
+#                     'run33': 
+#                     'run14': 
+#                     'run41': 
+#                     'run37': 
+# }
+}
+
+
 
 def get_experimental_separation():
     return exp_sep_onset_dict
@@ -113,6 +267,23 @@ def get_cfd_separation_bounds():
 
 def get_cfd_separation_values():
     return cfd_sep_onset_vals_dict
+
+def get_cfd_peak_vals_and_locs_values(param, param_type):
+    assert param in ['heatflux', 'pressure']
+    assert param_type in ['peak', 'location']
+
+    if param == 'heatflux':
+        if param_type == 'peak':
+            return cfd_peak_heatflux_vals_dict
+        return cfd_peak_heatflux_locs_vals_dict
+
+    if param_type == 'peak':
+        return cfd_peak_pressure_vals_dict
+
+    return cfd_peak_pressure_locs_vals_dict
+
+
+
 # import re
 # # List of filenames
 # filenames = [
@@ -155,10 +326,17 @@ def create_cfddatadict_for_solver(solvername, cfdfilenames):
                                     )
 
     if solvername == 'h3amr':
-        cfd_data_dict = load_data_files_h3amr(cfdfilenames,
+        
+        # cfd_data_dict = load_data_files_h3amr(cfdfilenames,
+        #                                 keys,
+        #                                 turb_model_list,
+        #                                 dtype = 'float'
+        #                             )
+        cfd_data_dict = load_data_files_ccm(cfdfilenames,
                                         keys,
                                         turb_model_list,
-                                        dtype = 'float'
+                                        dtype = 'float',
+                                        solver = solvername
                                     )
 
     if solvername in ['ansys_inc','ansys_aselsan']:
@@ -492,7 +670,8 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
     #     np.array([0.44733314, 0.57871104, 0.52377835]),
     #     np.array([0.62689056, 0.34869427, 0.26209748]),
     #     np.array([0.07498055, 0.1794057 , 0.82999425])]
-    color_list = ['red', 'blue','green', 'black', 'yellow', 'brown', 'cyan']
+    color_list = ['red', 'blue','green', 'black', 'yellow', 'brown', 'cyan',
+                 'grey','magenta']*3
 
 
 
@@ -530,7 +709,8 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
                     data_dict[tgt_mesh][turb_model][:-2,1] * scale_fac,
                     color = color,
                     label = labelname,
-                    linestyle= linestyles_list[linestyle_counter])
+                    linestyle= linestyles_list[linestyle_counter],
+                    linewidth = 2.0)
             linestyle_counter +=1
         else:
             if turb_model in tgt_turb_list:
@@ -542,7 +722,8 @@ def plot_loop_turbulence_models(data_dict, tgt_mesh, tgt_turb_list = None,
                         data_dict[tgt_mesh][turb_model][:-2,1]* scale_fac,
                         color = color,
                         label = labelname,
-                        linestyle= linestyles_list[linestyle_counter])
+                        linestyle= linestyles_list[linestyle_counter],
+                        linewidth = 2.0)
                 linestyle_counter +=1
 
 def apply_axes_limits(run_nb, geom_nb):
@@ -744,7 +925,20 @@ def filter_global_dict_based_on_parameters(cfd_dict,
     for _, cfdcode in enumerate(param_dict.keys()):
         res_dict[cfdcode] = {}
         for variable in keys_list:
+            turb_model_list = None
             turb_dict = cfd_dict[cfdcode][variable][param_dict[cfdcode]['mesh']]
+
+            # Filter on selected turb model if valid for solver in param matrix
+            if 'turb_model_list' in param_dict[cfdcode].keys():
+                turb_model_list = param_dict[cfdcode]['turb_model_list']
+                tmp_dict = copy.deepcopy(turb_dict)
+                for turbmod in turb_dict.keys():
+                    if turbmod not in turb_model_list:
+                        del tmp_dict[turbmod]
+                turb_dict = tmp_dict
+
+
+
             tmp_dict = filter_data_based_on_axial_position(turb_dict, geom_nb)
 
             res_dict[cfdcode][variable] = tmp_dict
@@ -833,6 +1027,8 @@ def compute_integral_quantities(cfd_dict, start_xcoord = None,
                 # print(variable)
 
                 res_dict[cfdcode][turb_mod]['integrated_'+variable] = int_val
+            # Sort per CFD code
+            res_dict[cfdcode]= dict(sorted(res_dict[cfdcode].items()))
     return res_dict
 
 
@@ -930,7 +1126,19 @@ def obtain_mapping_dict():
         'SSTVnorhok': 'k-$\\omega$ SST-V no 2/3 rho*k',
         'SSTKL': 'k-$\\omega$ SST-KL',
         'SAQCRV': 'SA 2013 QCR-V',
-        'SSCEARSM_Prt086Lemmon_LDFSS': 'SSC-EARSM'
+        'SSCEARSM_Prt086Lemmon_LDFSS': 'SSC-EARSM',
+        'SSTa10355_Prt086Lemmon_LDFSS':  'k-$\\omega$ SST a1=0.355',
+        'SAO':'SA-noft2',
+        'EARSMWJ3DTNT': 'EARSM WJ3D+TNT',
+        'EARSMWJHellsten': 'EARSM WJ+Hellsten',
+        'SSGLRRw2010':'SSG/LRR-$\\omega$ 2010',
+        'SST2003': 'k-$\\omega$ SST 2003',
+        'komegaMenterBSL': 'Menter BSL',
+        'komegaWilcox': 'Wilcox k-$\\omega$ 1988',
+        'wilcox+SST': 'Wilcox k-$\\omega$ + SST',
+        'WilcoxRSM2010':'Wilcox RSM 2010'
+
+
     }
 
     return mapping_dict
@@ -962,10 +1170,10 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None,
 
     # Iterate through the nested dictionary to fill in the table
     for main_key, sub_dict in nested_dict.items():
-        new_main_key = get_new_name(main_key)
+        new_main_key = get_new_name(main_key) # replace solver name
         first_entry = True
         for sub_key, values in sub_dict.items():
-            new_sub_key = get_new_name(sub_key)
+            new_sub_key = get_new_name(sub_key) # turb model naming
             if first_entry:
                 latex_table += f"{new_main_key} & {new_sub_key} & {values['integrated_wallP']} & {values['integrated_wallHeatFlux']} \\\\\n"
                 first_entry = False
@@ -987,7 +1195,8 @@ def create_latex_table_integrated(nested_dict, run_nb, mapping_dict = None,
 
 
 
-def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
+def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None,
+                                    resizebox = False):
     table_caption = f"Separation, peak values and associated location for run {run_nb.replace('run','')}"
     table_label = f"res_comparison_separation_{run_nb}"
 
@@ -1003,6 +1212,7 @@ def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
     # Start creating the LaTeX table
     latex_table = """
     \\begin{table}[ht]
+    \\centering
     \\begin{tabular}{p{1.8cm}p{2.6cm}p{1.1cm}p{1.3cm}p{1.4cm}p{1.8cm}p{1.4cm}}
     \\hline
     \\textbf{Solver} & \\textbf{Turbulence Model} & \\textbf{x$_{sep}$ (m)} &  \\textbf{p$_{peak}$ (kPa)} & \\textbf{p$_{peak,loc}$ (m)} &  \\textbf{q$_{peak}$ (MW/($m^2$))} &  \\textbf{q$_{peak,loc}$ (m)} \\\\
@@ -1030,6 +1240,12 @@ def create_latex_table_separation(nested_dict, run_nb, mapping_dict = None):
     \\label{{tab:{table_label}}}
     \\end{{table}}
     """
+    if resizebox:
+        latex_table = latex_table.replace("\\centering", "\\resizebox{\columnwidth}{!}{%")
+        latex_table = latex_table.replace("\\end{tabular}", "\\end{tabular} \n\t}")
+    return latex_table
+
+
     return latex_table
 
 

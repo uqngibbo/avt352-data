@@ -30,13 +30,17 @@ work_dir = os.getcwd()
 
 exp_sep = helpfunc.get_experimental_separation()
 geom_info = helpfunc.get_geometry_information()
-cfd_sep = helpfunc.get_cfd_separation_values()
 
 geom_names_dict = {'geom1': '6/42 cone-flare' , 'geom2': '7/40 cone-flare'}
 
-geom_select = 'geom2'
+geom_select = 'geom1'
+variable_of_interest = 'pressure'
 font_size = 14
-vertical_boxplot = False
+vertical_boxplot = True
+
+
+cfd_sep = helpfunc.get_cfd_peak_vals_and_locs_values(variable_of_interest, 'peak')
+
 
 data = []
 labels = []
@@ -60,33 +64,33 @@ fig, ax = plt.subplots()
 # Create boxplots
 ax.boxplot(data, vert = vertical_boxplot)
 
-# Plot a point on the first boxplot (Category A)
-for ind, run_nb in enumerate(labels):
-    label = ''
-    if ind == 0:
-        label = 'experimental \n separation onset'
-    if vertical_boxplot:
-        ax.scatter(ind+1, exp_sep[run_nb], color='red', label = label)  # (x=1, y=7)
-    else:
-        ax.scatter(exp_sep[run_nb], ind+1,color='red', label = label)  # (x=1, y=7)
+# # Plot a point on the first boxplot (Category A)
+# for ind, run_nb in enumerate(labels):
+#     label = ''
+#     if ind == 0:
+#         label = 'experimental \n separation onset'
+#     if vertical_boxplot:
+#         ax.scatter(ind+1, exp_sep[run_nb], color='red', label = label)  # (x=1, y=7)
+#     else:
+#         ax.scatter(exp_sep[run_nb], ind+1,color='red', label = label)  # (x=1, y=7)
 
 
 # Create a secondary axis that shares the same x-axis
-ax2 = ax.twinx()
+# ax2 = ax.twinx()
 
-tmp_geom = geom_info[geom_select]
-cone_flare_x = [0,tmp_geom['cone'], tmp_geom['total']]
-cone_flare_y = [0,
-                tmp_geom['cone']*np.sin(np.deg2rad(tmp_geom['angle_cone'])),
-                tmp_geom['cone']*np.sin(np.deg2rad(tmp_geom['angle_cone'])) \
-                + tmp_geom['flare']*np.sin(np.deg2rad(tmp_geom['angle_flare']))
-                ]
-ax2.plot(cone_flare_x, cone_flare_y, linestyle = '--', linewidth=  2, label = 'cone-flare \n geometry')
-ax2.set_ylabel('y (m)', fontsize=font_size)
+# tmp_geom = geom_info[geom_select]
+# cone_flare_x = [0,tmp_geom['cone'], tmp_geom['total']]
+# cone_flare_y = [0,
+#                 tmp_geom['cone']*np.sin(np.deg2rad(tmp_geom['angle_cone'])),
+#                 tmp_geom['cone']*np.sin(np.deg2rad(tmp_geom['angle_cone'])) \
+#                 + tmp_geom['flare']*np.sin(np.deg2rad(tmp_geom['angle_flare']))
+#                 ]
+# ax2.plot(cone_flare_x, cone_flare_y, linestyle = '--', linewidth=  2, label = 'cone-flare \n geometry')
+# ax2.set_ylabel('y (m)', fontsize=font_size)
 
 # increase tick width
 ax.tick_params(width=2)
-ax2.tick_params(width=2)
+# ax2.tick_params(width=2)
 
 # if geom_select == 'geom1':
 #     plt.plot([1, geom_info[geom_select]['cone']], [0, len(labels) -0.5], linestyle = '--',
@@ -120,49 +124,56 @@ ax2.tick_params(width=2)
 # Set custom xtick labels
 if vertical_boxplot:
     ax.set_xticklabels(labels, fontsize=font_size)
+    
+
+    ax.set_ylabel('peak pressure (kPa)', fontsize=font_size)
+    if variable_of_interest == 'heatflux':
+        ax.set_ylabel('peak heat flux (MW)', fontsize=font_size)
+
+    ax.set_xlabel('runs', fontsize=font_size)
 
 else:
     ax.set_yticklabels(labels)
-    ax.set_xlabel('axial separation onset location (m)', fontsize=font_size)
+    ax.set_xlabel('axial location (m)', fontsize=font_size)
     ax.set_ylabel('runs', fontsize=font_size)
 
 # Set title and labels
 # ax.set_title('Box plot for '  + geom_names_dict[geom_select])
 
 
-if geom_select == 'geom1':
-    plt.xlim(left = 2.4)
-    plt.xlim(right = 2.75)
-else:
-    plt.xlim(left = 2.2)
-    plt.xlim(right = 2.45)
+# if geom_select == 'geom1':
+#     plt.xlim(left = 2.5)
+#     plt.xlim(right = 2.85)
+# else:
+#     plt.xlim(left = 2.3)
+#     plt.xlim(right = 2.6)
 
 # change the fontsize
 ax.tick_params(axis='x', labelsize=font_size)
 ax.tick_params(axis='y', labelsize=font_size)
-ax2.tick_params(axis='x', labelsize=font_size)
-ax2.tick_params(axis='y', labelsize=font_size)
+# ax2.tick_params(axis='x', labelsize=font_size)
+# ax2.tick_params(axis='y', labelsize=font_size)
 
-cone_ymin = (limits_dict[geom_select]['xlim']['min']) *np.sin(np.deg2rad(tmp_geom['angle_cone']))
-# cone_ymax = cone_ymin + (limits_dict[geom_select]['xlim']['max']-limits_dict[geom_select]['xlim']['min']) *np.sin(np.deg2rad(tmp_geom['angle_flare']))
-cone_ymax = cone_ymin + (limits_dict[geom_select]['xlim']['max']-tmp_geom['cone']) *np.sin(np.deg2rad(tmp_geom['angle_flare']))
-ax2.set_ylim(cone_ymin, cone_ymax)
+# cone_ymin = (limits_dict[geom_select]['xlim']['min']) *np.sin(np.deg2rad(tmp_geom['angle_cone']))
+# # cone_ymax = cone_ymin + (limits_dict[geom_select]['xlim']['max']-limits_dict[geom_select]['xlim']['min']) *np.sin(np.deg2rad(tmp_geom['angle_flare']))
+# cone_ymax = cone_ymin + (limits_dict[geom_select]['xlim']['max']-tmp_geom['cone']) *np.sin(np.deg2rad(tmp_geom['angle_flare']))
+# ax2.set_ylim(cone_ymin, cone_ymax)
 
 
 
 # Get handles and labels from both axes
 lines, labels = ax.get_legend_handles_labels()
-lines2, labels2 = ax2.get_legend_handles_labels()
+# lines2, labels2 = ax2.get_legend_handles_labels()
 
-# Combine legends from both axes
-if geom_select == 'geom1':
-    ax.legend(lines + lines2, labels + labels2, loc='center left')
-else:
-    ax.legend(lines + lines2, labels + labels2, loc='best')
+# # Combine legends from both axes
+# if geom_select == 'geom1':
+#     ax.legend(lines + lines2, labels + labels2, loc='center left')
+# else:
+#     ax.legend(lines + lines2, labels + labels2, loc='best')
 
 # plt.legend()
 plt.tight_layout()
-plt.savefig('boxplot_'+geom_select+'.png', dpi = 300)
+plt.savefig('boxplot_peakvals_'+geom_select+'_'+ variable_of_interest+'.png', dpi = 300)
 # Display the plot
 plt.show()
 

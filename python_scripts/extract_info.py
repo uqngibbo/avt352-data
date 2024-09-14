@@ -21,8 +21,6 @@ run_nb = 'run6'
 geom_nb = "geom1"
 
 
-
-
 # Defines the solvers selected, the grid and turbulence models
 #   might look cumbersome at first but it's an elegant and simple solution to
 #   work with all the existing code structure
@@ -36,30 +34,32 @@ parameter_matrix = {
 #                                             }
                             # },
     # #for run4
-    #         'starccm':{ 'mesh':'mesh08',
-    #                 },
-    #         'eilmer':{ 'mesh':'mesh1',
-    #                     },
-    #         'ansys_aselsan':{ 'mesh':'meshXX',
-    #                     },
-    #         'SU2':{ 'mesh':'meshXX',
-    #                     },
-    #         'overflow':{ 'mesh':'mesh2',
-    #                     },
-    #         'vulcan': { 'mesh':'meshXX',
-    #                     'turb_model_list': ['SST', 'SSTV', 'SAQCRV',
-    #                                             'SA', 'SSTVnorhok', 'SSTKL']
-    #                     },
-    #         'cadence':{ 'mesh':'meshXX',
-    #                     'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS'],
-    #                     },
+            # 'starccm':{ 'mesh':'mesh08',
+            #         },
+            # 'eilmer':{ 'mesh':'mesh1',
+            #             },
+            # 'ansys_aselsan':{ 'mesh':'meshXX',
+            #             },
+            # 'SU2':{ 'mesh':'meshXX',
+            #         'turb_model_list': ['SST']
+            #             },
+            # 'overflow':{ 'mesh':'mesh3',
+            #                'turb_model_list': ['SST']
+            #             },
+            # 'vulcan': { 'mesh':'meshXX',
+            #             'turb_model_list': ['SST', 'SSTV', 'SAQCRV',
+            #                                      'SA', 'SSTVnorhok', 'SSTKL']
+            #             },
+            # 'cadence':{ 'mesh':'meshXX',
+            #             'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS'],
+            #             },
     # for run6
         'eilmer':{ 'mesh':'mesh1',
                     },
         'ansys_aselsan':{ 'mesh':'mesh4',
                     },
         'cadence':{ 'mesh':'meshXX',
-                        'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS'],
+                        # 'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS', ''],
                         },
         # for run 45
         # 'starccm':{ 'mesh':'mesh09',
@@ -80,8 +80,10 @@ parameter_matrix = {
         #                 },
         # 'vulcan':{ 'mesh':'meshXX',
         #                 },
-        # 'overflow':{ 'mesh':'mesh2',
-        #                 },     
+        # 'overflow':{ 'mesh':'meshXX',
+        #         'turb_model_list': ['SST']
+        #                 },
+                 
         # # run 28
         # 'gaspex':{ 'mesh':'mesh00',
         #         },
@@ -102,7 +104,7 @@ parameter_matrix = {
         #             },
         # 'ansys_inc':{ 'mesh':'meshXX',
         #         },
-        # 'SU2':{ 'mesh':'meshXX',
+        # 'SU2':{ 'mesh':'mesh05',
         #                 }
         # run 14
         # 'gaspex':{ 'mesh':'mesh00',
@@ -115,7 +117,7 @@ parameter_matrix = {
         # 'ansys_inc':{ 'mesh':'meshXX',
 
         #             } ,
-        # 'SU2':{ 'mesh':'meshXX',
+        # 'SU2':{ 'mesh':'mesh05',
         #             }  
 
         # run 41, 37, 34
@@ -125,7 +127,7 @@ parameter_matrix = {
         #     },
         # 'starccm':{ 'mesh':'mesh09',
         #             },
-        # 'SU2':{ 'mesh':'meshXX',
+        # 'SU2':{ 'mesh':'mesh05',
         #                 }
     #-------------------------------------------------_#
     }
@@ -221,11 +223,32 @@ for solver in sep_dict.keys():
         sep_list.append(sep_dict[solver][turbmod])
 
 
+peak_p_loc_list = []
+for solver in res_peak_p.keys():
+    for turbmod in res_peak_p[solver]['peak_loc'].keys():
+        peak_p_loc_list.append(res_peak_p[solver]['peak_loc'][turbmod])
+
+peak_q_loc_list = []
+for solver in res_peak_q.keys():
+    for turbmod in res_peak_q[solver]['peak_loc'].keys():
+        peak_q_loc_list.append(res_peak_q[solver]['peak_loc'][turbmod])
+
+peak_p_list = []
+for solver in res_peak_p.keys():
+    for turbmod in res_peak_p[solver]['peak'].keys():
+        peak_p_list.append(res_peak_p[solver]['peak'][turbmod])
+
+peak_q_list = []
+for solver in res_peak_q.keys():
+    for turbmod in res_peak_q[solver]['peak'].keys():
+        peak_q_list.append(res_peak_q[solver]['peak'][turbmod])
+
+
 
 xdata_bounds_dict = helpfunc.compute_data_bounds(reduced_dict)
 
 sep_peak_dict = helpfunc.join_separation_dicts(sep_dict, res_peak_p, res_peak_q)
-aa = helpfunc.create_latex_table_separation(sep_peak_dict, run_nb)
+aa = helpfunc.create_latex_table_separation(sep_peak_dict, run_nb, resizebox = True)
 print(aa)
 
 
