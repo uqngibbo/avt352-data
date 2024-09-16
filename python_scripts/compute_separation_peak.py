@@ -136,8 +136,8 @@ mesh_info['run4'] = {"mesh06":549950, "mesh07":808436, "mesh08":1148417}
 
 
 #-------------------------------------------------------------------------------#
-run_nb = 'run37'
-geom_nb = "geom2"
+run_nb = 'run4'
+geom_nb = "geom1"
 solver = 'starccm'
 cfd_folder = "../cfddata/"+solver+"/"+geom_nb+"/"+run_nb
 

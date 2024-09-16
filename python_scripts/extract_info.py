@@ -17,8 +17,8 @@ import helper_functions as helpfunc
 #-------------------------------------------------------------------------------#
 #---------User selection zone-------------------------------#
 ref_folder = "../refdata"
-run_nb = 'run6'
-geom_nb = "geom1"
+run_nb = 'run37'
+geom_nb = "geom2"
 
 
 # Defines the solvers selected, the grid and turbulence models
@@ -51,16 +51,16 @@ parameter_matrix = {
             #                                      'SA', 'SSTVnorhok', 'SSTKL']
             #             },
             # 'cadence':{ 'mesh':'meshXX',
-            #             'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS'],
+            #             # 'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS'],
             #             },
     # for run6
-        'eilmer':{ 'mesh':'mesh1',
-                    },
-        'ansys_aselsan':{ 'mesh':'mesh4',
-                    },
-        'cadence':{ 'mesh':'meshXX',
-                        # 'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS', ''],
-                        },
+        # 'eilmer':{ 'mesh':'mesh1',
+        #             },
+        # 'ansys_aselsan':{ 'mesh':'mesh4',
+        #             },
+        # 'cadence':{ 'mesh':'meshXX',
+        #                 # 'turb_model_list': ['SSCEARSM_Prt086Lemmon_LDFSS', ''],
+        #                 },
         # for run 45
         # 'starccm':{ 'mesh':'mesh09',
         #             },
@@ -104,9 +104,9 @@ parameter_matrix = {
         #             },
         # 'ansys_inc':{ 'mesh':'meshXX',
         #         },
-        # 'SU2':{ 'mesh':'mesh05',
+        # 'SU2':{ 'mesh':'meshXX',
         #                 }
-        # run 14
+        # # run 14
         # 'gaspex':{ 'mesh':'mesh00',
         #         },
         # 'eilmer':{ 'mesh':'mesh1',
@@ -117,17 +117,17 @@ parameter_matrix = {
         # 'ansys_inc':{ 'mesh':'meshXX',
 
         #             } ,
-        # 'SU2':{ 'mesh':'mesh05',
+        # 'SU2':{ 'mesh':'meshXX',
         #             }  
 
         # run 41, 37, 34
-        # 'gaspex':{ 'mesh':'mesh00',
-        #         },
-        # 'eilmer':{ 'mesh':'mesh1',
-        #     },
-        # 'starccm':{ 'mesh':'mesh09',
-        #             },
-        # 'SU2':{ 'mesh':'mesh05',
+        'gaspex':{ 'mesh':'mesh00',
+                },
+        'eilmer':{ 'mesh':'mesh1',
+            },
+        'starccm':{ 'mesh':'mesh09',
+                    },
+        # 'SU2':{ 'mesh':'meshXX',
         #                 }
     #-------------------------------------------------_#
     }
@@ -190,14 +190,16 @@ print(latex_table)
 #--------------Separation onset-----------------#
 # Specify the bounds too look for largest grad of pressure. Run dependent
 # NOTE: We might have to Taylor bounds for different solvers, TBD
+
+xbounds_dict = None
 if "14" in run_nb:
     xbounds = [2.1,2.350]  # for run 14
 elif "28" in run_nb:
-    xbounds = [1.0,2.37]  # for run 28
+    xbounds = [1.0,2.353]  # for run 28
 elif "33" in run_nb:
     xbounds = [1.0,2.35] 
 elif "34" in run_nb:
-    xbounds = [1.0,2.35]
+    xbounds = [1.0,2.353]
 elif "37" in run_nb:
     xbounds = [1.0,2.35] 
 elif "41" in run_nb:
@@ -205,12 +207,15 @@ elif "41" in run_nb:
 elif "45" in run_nb:
     xbounds = [2.0,2.35] 
 elif "4" in run_nb:
-    xbounds = [1.0,2.63] 
+    xbounds = [1.0,2.639]
+    xbounds_dict = {}
+    xbounds_dict['overflow'] = [1.0,2.5]
 elif "6" in run_nb:
-    xbounds = [1.0,2.63] 
+    xbounds = [1.0,2.64] 
 
 
-sep_dict = helpfunc.compute_separation_onsets_solvers(reduced_dict, xbounds)
+sep_dict = helpfunc.compute_separation_onsets_solvers(reduced_dict, xbounds, 
+                                                    xbounds_dict = xbounds_dict)
 res_peak_p = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallP', start_xcoord= 1)
 res_peak_q = helpfunc.compute_peak_values_solvers(reduced_dict, 'wallHeatFlux',
                                                                 start_xcoord= 1,

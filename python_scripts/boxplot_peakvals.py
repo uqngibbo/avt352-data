@@ -33,10 +33,11 @@ geom_info = helpfunc.get_geometry_information()
 
 geom_names_dict = {'geom1': '6/42 cone-flare' , 'geom2': '7/40 cone-flare'}
 
-geom_select = 'geom1'
+geom_select = 'geom2'
 variable_of_interest = 'pressure'
 font_size = 14
 vertical_boxplot = True
+
 
 
 cfd_sep = helpfunc.get_cfd_peak_vals_and_locs_values(variable_of_interest, 'peak')
